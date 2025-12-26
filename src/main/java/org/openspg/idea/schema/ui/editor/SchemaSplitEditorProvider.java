@@ -1,6 +1,5 @@
 package org.openspg.idea.schema.ui.editor;
 
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.event.CaretEvent;
 import com.intellij.openapi.editor.event.CaretListener;
 import com.intellij.openapi.fileEditor.FileEditor;
@@ -17,14 +16,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.lang.psi.SchemaEntity;
 import org.openspg.idea.schema.SchemaFileType;
+import org.openspg.idea.schema.psi.SchemaEntity;
 
 import java.util.Objects;
 
 public class SchemaSplitEditorProvider implements FileEditorProvider, DumbAware {
-
-    private static final Logger logger = Logger.getInstance(SchemaSplitEditorProvider.class);
 
     public SchemaSplitEditorProvider() {
 
@@ -35,8 +32,7 @@ public class SchemaSplitEditorProvider implements FileEditorProvider, DumbAware 
         return isSchemaFileType(project, file);
     }
 
-
-    @Override
+    // @Override
     public boolean acceptRequiresReadAction() {
         return false;
     }
@@ -64,7 +60,7 @@ public class SchemaSplitEditorProvider implements FileEditorProvider, DumbAware 
                     return;
                 }
 
-                String entityName = entity.getEntityInfo().getEntityName();
+                String entityName = entity.getEntityHead().getBasicStructureDeclaration().getStructureNameDeclaration().getText();
                 if (entityName != null && !entityName.isBlank()) {
                     previewEditor.activateEntity(entityName);
                 }

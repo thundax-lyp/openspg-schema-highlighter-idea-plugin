@@ -1,10 +1,6 @@
 package org.openspg.idea.schema.ui.editor;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.ui.jcef.JCEFHtmlPanel;
 import com.intellij.util.Url;
 import com.intellij.util.Urls;
@@ -15,14 +11,13 @@ import org.cef.handler.*;
 import org.cef.misc.BoolRef;
 import org.cef.network.CefRequest;
 import org.jetbrains.ide.BuiltInServerManager;
-import org.openspg.idea.lang.psi.SchemaEntity;
+import org.openspg.idea.schema.psi.SchemaEntity;
 import org.openspg.idea.schema.ui.editor.jcef.FetchSchemaApiSupplier;
 import org.openspg.idea.schema.ui.editor.jcef.FetchThemeCssSupplier;
 import org.openspg.idea.schema.ui.editor.jcef.FocusEntityApiSupplier;
 import org.openspg.idea.schema.ui.editor.jcef.SchemaResourceRequestHandler;
 import org.openspg.idea.schema.ui.editor.server.PreviewStaticServer;
 import org.openspg.idea.schema.ui.editor.server.ResourcesController;
-import org.openspg.idea.schema.util.EditorUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -41,24 +36,18 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
                             + "/"))
     );
 
-    private final Project myProject;
-    private final VirtualFile myFile;
     private byte[] resourceBytes = new byte[0];
 
     private CefRequestHandler requestHandler;
     private CefLifeSpanHandler lifeSpanHandler;
     private CefDisplayHandler displayHandler;
 
-    public SchemaHtmlPanel(Project project, VirtualFile file) {
+    public SchemaHtmlPanel() {
         super(null);
-        this.myProject = project;
-        this.myFile = file;
         initialize();
     }
 
     private void initialize() {
-        loadResourceFile();
-
         getJBCefClient().addRequestHandler(requestHandler = new CefRequestHandlerAdapter() {
             @Override
             public CefResourceRequestHandler getResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, boolean isNavigation, boolean isDownload, String requestInitiator, BoolRef disableDefaultHandling) {
@@ -86,20 +75,8 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
         }, getCefBrowser());
 
         this.loadURL(HOME_URL.toString());
-    }
 
-    private void loadResourceFile() {
-        PsiFile psiFile = PsiManager.getInstance(myProject).findFile(myFile);
-        if (psiFile == null) {
-            logger.error("Unparsed file: " + myFile.getName());
-            this.resourceBytes = new byte[0];
-
-        } else {
-            String schemaString = EditorUtils.fileToJsonString(psiFile);
-            logger.warn(schemaString.substring(0, Math.min(160, schemaString.length())));
-            String dataString = "{\"code\":0,\"message\":\"success\",\"data\":" + schemaString + "}";
-            this.resourceBytes = dataString.getBytes(StandardCharsets.UTF_8);
-        }
+        logger.warn("Loading URL: " + HOME_URL);
     }
 
 
@@ -111,8 +88,11 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
         super.dispose();
     }
 
-    public void updateSchema() {
-        loadResourceFile();
+    public void updateSchema(String schemaString) {
+        String dataString = "{\"code\":0,\"message\":\"success\",\"data\":" + schemaString + "}";
+        System.out.println(dataString);
+        this.resourceBytes = dataString.getBytes(StandardCharsets.UTF_8);
+
         String script = "document.getElementById('schema-diagram-refresh-button').click();";
         getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
     }
@@ -126,7 +106,7 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
 
     private Boolean handleEntityActivated(List<SchemaEntity> entities) {
         for (SchemaEntity entity : entities) {
-            System.out.println(entity.getName());
+            System.out.println(entity.getEntityHead().getBasicStructureDeclaration().getStructureNameDeclaration().getText());
         }
         return true;
     }

@@ -52,7 +52,7 @@ public class EditorUtils {
         return JSONObject.toJSONString(map);
     }
 
-    private static Map<String, Object> normalizeJsonMap(Map<?, ?> data) {
+    public static Map<String, Object> normalizeJsonMap(Map<?, ?> data) {
         Map<String, Object> result = new LinkedHashMap<>();
         for (Map.Entry<?, ?> entry : data.entrySet()) {
             String key = entry.getKey().toString();

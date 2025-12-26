@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import org.cef.network.CefRequest;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.lang.psi.SchemaEntity;
+import org.openspg.idea.schema.psi.SchemaEntity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
