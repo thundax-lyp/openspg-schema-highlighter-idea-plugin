@@ -2,17 +2,18 @@ package org.openspg.idea.schema.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.lang.psi.SchemaEntity;
-import org.openspg.idea.lang.psi.SchemaEntityInfo;
-import org.openspg.idea.lang.psi.SchemaEntityMeta;
 import org.openspg.idea.schema.SchemaIcons;
+import org.openspg.idea.schema.psi.SchemaBasicStructureDeclaration;
+import org.openspg.idea.schema.psi.SchemaEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
 public class SchemaEntityStructureViewElement extends AbstractSchemaStructureViewElement<SchemaEntity> {
+
+    private static final Icon[] ICONS = {
+            SchemaIcons.Nodes.Entity, SchemaIcons.Nodes.Property, SchemaIcons.Nodes.SubProperty,
+    };
 
     public SchemaEntityStructureViewElement(SchemaEntity element) {
         super(element);
@@ -20,31 +21,31 @@ public class SchemaEntityStructureViewElement extends AbstractSchemaStructureVie
 
     @Override
     public String getNullableAlphaSortKey() {
-        return myElement.getName();
+        return myElement.getEntityHead().getBasicStructureDeclaration().getStructureNameDeclaration().getText();
     }
 
     @Override
     protected PresentationData createPresentation(SchemaEntity element) {
-        SchemaEntityInfo info = element.getEntityInfo();
+        SchemaBasicStructureDeclaration declaration = element.getEntityHead().getBasicStructureDeclaration();
         return new PresentationData(
-                info.getEntityName(),
-                info.getEntityAliasName(),
-                SchemaIcons.Nodes.Entity,
+                declaration.getStructureNameDeclaration().getText(),
+                declaration.getStructureAliasDeclaration().getText(),
+                this.getIcon(element),
                 null
         );
     }
 
     @Override
     public TreeElement @NotNull [] getChildren() {
-        List<SchemaEntityMeta> elements = PsiTreeUtil.getChildrenOfTypeAsList(myElement, SchemaEntityMeta.class);
-
-        List<TreeElement> treeElements = new ArrayList<>(elements.size());
-
-        for (SchemaEntityMeta element : elements) {
-            treeElements.add(new SchemaEntityMetaStructureViewElement(element));
+        if (myElement.getEntityBody() == null) {
+            return EMPTY_ARRAY;
         }
 
-        return treeElements.toArray(new TreeElement[0]);
+        return this.buildPropertyTreeElements(myElement.getEntityBody().getPropertyList());
     }
 
+    private Icon getIcon(SchemaEntity element) {
+        int level = Math.max(0, Math.min(element.getLevel(), ICONS.length - 1));
+        return ICONS[level];
+    }
 }

@@ -3,11 +3,17 @@ package org.openspg.idea.schema.structureView.viewElement;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.SortableTreeElement;
+import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.openspg.idea.schema.psi.SchemaEntity;
+import org.openspg.idea.schema.psi.SchemaProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 abstract class AbstractSchemaStructureViewElement<T extends PsiElement> implements StructureViewTreeElement, SortableTreeElement {
 
@@ -74,4 +80,23 @@ abstract class AbstractSchemaStructureViewElement<T extends PsiElement> implemen
         return null;
     }
 
+    protected TreeElement @NotNull [] buildEntityTreeElements(List<SchemaEntity> elements) {
+        List<TreeElement> treeElements = new ArrayList<>(elements.size());
+
+        for (SchemaEntity element : elements) {
+            treeElements.add(new SchemaEntityStructureViewElement(element));
+        }
+
+        return treeElements.toArray(new TreeElement[0]);
+    }
+
+    protected TreeElement @NotNull [] buildPropertyTreeElements(List<SchemaProperty> elements) {
+        List<TreeElement> treeElements = new ArrayList<>(elements.size());
+
+        for (SchemaProperty element : elements) {
+            treeElements.add(new SchemaPropertyStructureViewElement(element));
+        }
+
+        return treeElements.toArray(new TreeElement[0]);
+    }
 }

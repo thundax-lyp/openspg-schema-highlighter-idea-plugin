@@ -4,12 +4,8 @@ import com.intellij.ide.navigationToolbar.StructureAwareNavBarModelExtension;
 import com.intellij.lang.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.openspg.idea.lang.psi.SchemaEntityInfo;
-import org.openspg.idea.schema.SchemaIcons;
 import org.openspg.idea.schema.SchemaLanguage;
 import org.openspg.idea.schema.psi.SchemaFile;
-
-import javax.swing.*;
 
 public class SchemaStructureAwareNavbar extends StructureAwareNavBarModelExtension {
 
@@ -24,21 +20,6 @@ public class SchemaStructureAwareNavbar extends StructureAwareNavBarModelExtensi
         if (object instanceof SchemaFile) {
             return ((SchemaFile) object).getName();
         }
-
-        if (object instanceof SchemaEntityInfo) {
-            return ((SchemaEntityInfo) object).getEntityName();
-        }
-
-        return null;
-    }
-
-    @Override
-    @Nullable
-    public Icon getIcon(Object object) {
-        if (object instanceof SchemaEntityInfo) {
-            return SchemaIcons.Nodes.Entity;
-        }
-
         return null;
     }
 

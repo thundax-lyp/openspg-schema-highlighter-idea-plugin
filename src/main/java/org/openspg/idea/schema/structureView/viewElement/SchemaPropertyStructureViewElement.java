@@ -2,16 +2,18 @@ package org.openspg.idea.schema.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.lang.psi.SchemaProperty;
-import org.openspg.idea.lang.psi.SchemaPropertyMeta;
 import org.openspg.idea.schema.SchemaIcons;
+import org.openspg.idea.schema.psi.SchemaBasicPropertyDeclaration;
+import org.openspg.idea.schema.psi.SchemaProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
 public class SchemaPropertyStructureViewElement extends AbstractSchemaStructureViewElement<SchemaProperty> {
+
+    private static final Icon[] ICONS = {
+            SchemaIcons.Nodes.EntityMeta, SchemaIcons.Nodes.PropertyMeta, SchemaIcons.Nodes.SubPropertyMeta,
+    };
 
     public SchemaPropertyStructureViewElement(SchemaProperty element) {
         super(element);
@@ -19,28 +21,37 @@ public class SchemaPropertyStructureViewElement extends AbstractSchemaStructureV
 
     @Override
     public String getNullableAlphaSortKey() {
-        return myElement.getPropertyInfo().getPropertyName();
+        return myElement.getPropertyHead().getBasicPropertyDeclaration().getText();
     }
 
     @Override
     protected PresentationData createPresentation(SchemaProperty element) {
+        SchemaBasicPropertyDeclaration declaration = element.getPropertyHead().getBasicPropertyDeclaration();
+
+        String value = declaration.getValue();
+        if (value != null && value.startsWith("[[") && value.endsWith("]]")) {
+            value = "[[...]]";
+        }
+
         return new PresentationData(
-                myElement.getPropertyInfo().getPropertyName(),
-                myElement.getPropertyInfo().getPropertyAliasName(),
-                SchemaIcons.Nodes.Property,
+                declaration.getName(),
+                value,
+                this.getIcon(element),
                 null
         );
     }
 
     @Override
     public TreeElement @NotNull [] getChildren() {
-        List<SchemaPropertyMeta> elements = PsiTreeUtil.getChildrenOfTypeAsList(myElement, SchemaPropertyMeta.class);
-
-        List<TreeElement> treeElements = new ArrayList<>(elements.size());
-        for (SchemaPropertyMeta element : elements) {
-            treeElements.add(new SchemaPropertyMetaStructureViewElement(element));
+        if (myElement.getPropertyBody() == null) {
+            return EMPTY_ARRAY;
         }
-        return treeElements.toArray(new TreeElement[0]);
+
+        return this.buildEntityTreeElements(myElement.getPropertyBody().getEntityList());
     }
 
+    private Icon getIcon(SchemaProperty element) {
+        int level = Math.max(0, Math.min(element.getLevel() - 1, ICONS.length - 1));
+        return ICONS[level];
+    }
 }

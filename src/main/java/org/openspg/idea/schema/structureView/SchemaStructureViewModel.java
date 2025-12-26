@@ -8,11 +8,10 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.openspg.idea.lang.psi.SchemaEntityInfo;
+import org.openspg.idea.schema.psi.SchemaEntityHead;
 import org.openspg.idea.schema.structureView.viewElement.SchemaFileStructureViewElement;
 
-public class SchemaStructureViewModel extends StructureViewModelBase implements
-        StructureViewModel.ElementInfoProvider {
+public class SchemaStructureViewModel extends StructureViewModelBase implements StructureViewModel.ElementInfoProvider {
 
     public SchemaStructureViewModel(@Nullable Editor editor, PsiFile psiFile) {
         super(psiFile, editor, new SchemaFileStructureViewElement(psiFile));
@@ -37,7 +36,7 @@ public class SchemaStructureViewModel extends StructureViewModelBase implements
     @Override
     protected Class<?> @NotNull [] getSuitableClasses() {
         return new Class[]{
-                SchemaEntityInfo.class,
+                SchemaEntityHead.class,
         };
     }
 
