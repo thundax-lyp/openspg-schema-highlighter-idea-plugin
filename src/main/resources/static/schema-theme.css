@@ -1,0 +1,8 @@
+:root {
+	--bg-color: rgb(43, 43, 43);
+	--text-color: rgb(169, 183, 198);
+	--keyword-color: rgb(204, 120, 50);
+	--entity-name-color: rgb(169, 183, 198);
+	--entity-alias-color: rgb(106, 135, 89);
+	--entity-reference-color: rgb(118, 154, 165);
+}

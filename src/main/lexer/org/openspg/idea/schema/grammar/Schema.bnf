@@ -1,0 +1,126 @@
+{
+    parserClass="org.openspg.idea.schema.parser._SchemaParser"
+    parserUtilClass="org.openspg.idea.schema.parser.SchemaParserUtil"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Schema"
+    psiImplClassSuffix="Impl"
+    psiPackage="org.openspg.idea.schema.psi"
+    psiImplPackage="org.openspg.idea.schema.psi.impl"
+
+    elementTypeHolderClass="org.openspg.idea.schema.psi.SchemaTypes"
+    elementTypeClass="org.openspg.idea.schema.SchemaElementType"
+    tokenTypeClass="org.openspg.idea.schema.psi.SchemaTokenType"
+
+    psiImplUtilClass="org.openspg.idea.schema.psi.impl.SchemaPsiImplUtil"
+}
+
+schemaFile ::= item_*
+
+private item_ ::= namespace | root_entity | COMMENT | LINE_COMMENT
+
+namespace ::= NAMESPACE_KEYWORD IDENTIFIER {
+    methods=[getNamespace toJson]
+}
+
+/**
+ * Basic Element declaration
+ * Example:
+ */
+// Example:
+// Chunk(文本块): EntityType
+// BigChunk("大文本块"): StandardType.Text
+// MultiChunk("多个文本块") -> Chunk, BigChunk
+// IND#belongTo(属于): TaxOfRiskApp
+basic_structure_declaration ::= structure_name_declaration LPARENTH structure_alias_declaration RPARENTH structure_type_declaration {
+    methods=[getName toJson]
+}
+
+structure_name_declaration ::= structure_name
+structure_name ::= (structure_semantic_name HASH)* structure_real_name
+structure_semantic_name ::= IDENTIFIER
+structure_real_name ::= IDENTIFIER
+
+structure_alias_declaration ::= structure_alias
+structure_alias ::= (IDENTIFIER | STRING_LITERAL | TEXT)+
+
+// : EntityType
+// -> EntityType, ConceptType, MyType:
+structure_type_declaration ::= basic_structure_type_declaration | inherited_structure_type_declaration {
+    methods=[getTypes]
+}
+
+basic_structure_type_declaration ::= COLON basic_structure_type_variable
+basic_structure_type_variable ::= knowledge_structure_type | basic_structure_type | standard_structure_type | variable_structure_type
+
+inherited_structure_type_declaration ::= RIGHT_ARROW (inherited_structure_type_variable COMMA)* inherited_structure_type_variable COLON
+inherited_structure_type_variable ::= knowledge_structure_type | standard_structure_type | variable_structure_type
+
+knowledge_structure_type ::= ENTITY_TYPE_KEYWORD | CONCEPT_TYPE_KEYWORD | EVENT_TYPE_KEYWORD | INDEX_TYPE_KEYWORD
+basic_structure_type ::= (BASIC_TYPE_KEYWORD DOT)? (INTEGER_KEYWORD | FLOAT_KEYWORD | TEXT_KEYWORD)
+standard_structure_type ::= STANDARD_TYPE_KEYWORD DOT IDENTIFIER
+variable_structure_type ::= structure_name {
+   methods=[getReference]
+}
+
+/**
+ * Basic Key-Value Property declaration
+ * Example:
+ * desc:
+ * desc: 文本块
+ * desc: [[ plain text... ]]
+ */
+basic_property_declaration ::= property_name_declaration COLON property_value_declaration? {
+    methods=[getName getValue toJson]
+}
+
+property_name_declaration ::= property_name_variable
+property_name_variable ::= builtin_property_name | IDENTIFIER
+builtin_property_name ::=
+            DESC_KEYWORD | PROPERTIES_KEYWORD | RELATIONS_KEYWORD | HYPERNYMP_PREDICATE_KEYWORD | REGULAR_KEYWORD
+            | SPREADABLE_KEYWORD | AUTORELATE_KEYWORD | CONSTRAINT_KEYWORD | RULE_KEYWORD | INDEX_KEYWORD
+
+property_value_declaration ::= property_value_variable
+property_value_variable ::= builtin_property_value | plain_text_block | TEXT+
+builtin_property_value ::=
+            IS_A_KEYWORD | LOCATE_AT_KEYWORD | MANNER_OF_KEYWORD | TEXT_KEYWORD | VECTOR_KEYWORD | TEXT_AND_VECTOR_KEYWORD
+            | SPARSE_VECTOR_KEYWORD | TEXT_AND_SPARSE_VECTOR_KEYWORD | NOT_NULL_KEYWORD | MULTI_VALUE_KEYWORD
+
+plain_text_block ::= DOUBLE_LBRACKET plain_text_content? DOUBLE_RBRACKET
+plain_text_content ::= PLAIN_TEXT+ {
+    mixin="org.openspg.idea.schema.psi.impl.SchemaPlainTextContentBase"
+    implements="com.intellij.psi.PsiLanguageInjectionHost"
+}
+
+/**
+ * Entity
+ *
+ * Example:
+ * Chunk(文本块): EntityType
+ * Chunk(文本块)->EntityType, ConceptType:
+ */
+root_entity ::= entity
+
+entity ::= entity_head entity_body? {
+    methods=[getName getLevel isBodyEmpty toJson]
+}
+entity_head ::= basic_structure_declaration {
+    mixin="org.openspg.idea.schema.psi.impl.SchemaNamedElementImpl"
+    implements="org.openspg.idea.schema.psi.SchemaNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
+entity_body ::= INDENT property+ DEDENT
+
+/**
+ * Property
+ *
+ * Example:
+ * Chunk(文本块): EntityType
+ *     desc: 文本块
+ */
+property ::= property_head property_body? {
+    methods=[getLevel isBodyEmpty toJson]
+}
+property_head ::= basic_property_declaration
+property_body ::= INDENT entity+ DEDENT

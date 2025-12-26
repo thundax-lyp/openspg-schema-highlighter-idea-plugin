@@ -1,0 +1,183 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>org.openspg.schema-highlighter</id>
+
+    <name>OpenSPG Schema Mark Language Highlighter</name>
+
+    <vendor email="thundax@qq.com" url="https://github.com/OpenSPG">OpenSPG</vendor>
+
+    <description><![CDATA[
+        <p>Provides support for OpenSPG Schema mark language</p>
+        <ul>
+            <li>Full support for OpenSPG Schema syntax: highlighting, completion, navigation, inspections, intentions, and much more</li>
+            <li>Dedicated file types: <code>.schema</code> and <code>.rule</code></li>
+        </ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        <ul>
+            <li><b>version 0.0.16</b> RuleML: bug fixed</li>
+            <li><b>version 0.0.15</b> SchemaML: optimize preview</li>
+            <li><b>version 0.0.14</b> RuleML: upgrade formatter</li>
+            <li><b>version 0.0.13</b> SchemaML: bug fixed</li>
+            <li><b>version 0.0.12</b> support OpenSPG 0.8.0</li>
+            <li><b>version 0.0.11</b> SchemaML: add RuleML injection</li>
+            <li><b>version 0.0.10</b> RuleML: add formatter and commenter</li>
+            <li><b>version 0.0.9</b> RuleML: add structure view</li>
+            <li><b>version 0.0.8</b> RuleML: support Concept-Rule mark language</li>
+            <li><b>version 0.0.7</b> SchemaML: support PyCharm IDE</li>
+            <li><b>version 0.0.6</b> SchemaML: relationship graph support self-edge</li>
+            <li><b>version 0.0.5</b> SchemaML: add relationship graph preview</li>
+        </ul>
+    ]]></change-notes>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensionPoints>
+        <extensionPoint qualifiedName="org.openspg.schema.previewEditorProvider"
+                        interface="com.intellij.openapi.fileEditor.FileEditorProvider"
+                        dynamic="true"/>
+    </extensionPoints>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+        <applicationService serviceImplementation="org.openspg.idea.schema.settings.SchemaSettings"/>
+
+        <!-- SchemaML: begin -->
+        <fileType
+                name="OpenSPG Schema File"
+                implementationClass="org.openspg.idea.schema.SchemaFileType"
+                fieldName="INSTANCE"
+                language="OpenSPG Schema"
+                extensions="schema"/>
+
+        <lang.parserDefinition
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.parser.SchemaParserDefinition"/>
+
+        <annotator
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.annotator.SchemaAnnotator"/>
+
+        <lang.syntaxHighlighterFactory
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.highlighter.SchemaSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage
+                implementation="org.openspg.idea.schema.highlighter.SchemaColorSettingsPage"/>
+
+        <lang.psiStructureViewFactory
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.structureView.SchemaStructureViewFactory"/>
+
+        <codeInsight.lineMarkerProvider
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.SchemaLineMarkerProvider"/>
+
+        <navbar implementation="org.openspg.idea.schema.structureView.SchemaStructureAwareNavbar"/>
+
+        <lang.formatter
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.formatter.SchemaFormattingModelBuilder"/>
+
+        <codeStyleSettingsProvider
+                implementation="org.openspg.idea.schema.codeStyle.SchemaCodeStyleSettingsProvider"/>
+
+        <langCodeStyleSettingsProvider
+                implementation="org.openspg.idea.schema.codeStyle.SchemaLanguageCodeStyleSettingsProvider"/>
+
+        <lang.commenter
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.SchemaCommenter"/>
+
+        <httpRequestHandler implementation="org.openspg.idea.schema.ui.editor.server.PreviewStaticServer"/>
+        <fileEditorProvider id="schema-preview-editor"
+                            implementation="org.openspg.idea.schema.ui.editor.SchemaSplitEditorProvider"/>
+
+        <lang.foldingBuilder
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.SchemaFoldingBuilder"/>
+
+        <spellchecker.support
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.spellchecker.SchemaSpellcheckingStrategy"/>
+
+        <languageInjector implementation="org.openspg.idea.schema.psi.SchemaLanguageInjector"/>
+        <multiHostInjector implementation="org.openspg.idea.schema.injection.SchemaMultiHostInjector"/>
+        <!-- SchemaML: end -->
+
+        <!-- ConceptRuleML: begin -->
+        <fileType
+                name="OpenSPG Concept Rule File"
+                implementationClass="org.openspg.idea.conceptRule.ConceptRuleFileType"
+                fieldName="INSTANCE"
+                language="OpenSPG Concept Rule"
+                extensions="rule"/>
+
+        <lang.parserDefinition
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.parser.ConceptRuleParserDefinition"/>
+
+        <annotator
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.annotator.ConceptRuleAnnotator"/>
+
+        <lang.syntaxHighlighterFactory
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.highlighter.ConceptRuleSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage
+                implementation="org.openspg.idea.conceptRule.highlighter.ConceptRuleColorSettingsPage"/>
+
+        <lang.psiStructureViewFactory
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.structureView.ConceptRuleStructureViewFactory"/>
+
+        <navbar implementation="org.openspg.idea.conceptRule.structureView.ConceptRuleStructureAwareNavbar"/>
+
+        <lang.formatter
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.formatter.ConceptRuleFormattingModelBuilder"/>
+
+        <codeStyleSettingsProvider
+                implementation="org.openspg.idea.conceptRule.codeStyle.ConceptRuleCodeStyleSettingsProvider"/>
+
+        <langCodeStyleSettingsProvider
+                implementation="org.openspg.idea.conceptRule.codeStyle.ConceptRuleLanguageCodeStyleSettingsProvider"/>
+
+        <lang.commenter
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.ConceptRuleCommenter"/>
+
+        <lang.foldingBuilder
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.ConceptRuleFoldingBuilder"/>
+        <!-- ConceptRuleML: end -->
+
+
+        <completion.contributor
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.completion.SchemaCompletionContributor"/>
+
+        <!--        <psi.referenceContributor-->
+        <!--                language="OpenSPG Schema"-->
+        <!--                implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>-->
+
+        <!--        <lang.findUsagesProvider-->
+        <!--                language="OpenSPG Schema"-->
+        <!--                implementationClass="org.openspg.idea.schema.SchemaFindUsagesProvider"/>-->
+
+    </extensions>
+
+    <extensions defaultExtensionNs="org.openspg.schema">
+        <previewEditorProvider implementation="org.openspg.idea.schema.ui.editor.SchemaPreviewEditorProvider"/>
+    </extensions>
+
+
+</idea-plugin>
