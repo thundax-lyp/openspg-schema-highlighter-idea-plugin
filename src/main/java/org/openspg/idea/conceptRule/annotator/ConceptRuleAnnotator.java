@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.annotator.AnnotateProcessor;
+import org.openspg.idea.conceptRule.annotator.processor.ConceptRuleConceptRuleBodyProcessor;
 import org.openspg.idea.conceptRule.annotator.processor.ConceptRuleHighlightingProcessor;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ final class ConceptRuleAnnotator implements Annotator {
     public ConceptRuleAnnotator() {
         myProcessors = new HashSet<>();
         myProcessors.add(new ConceptRuleHighlightingProcessor());
+        myProcessors.add(new ConceptRuleConceptRuleBodyProcessor());
     }
 
     @Override
