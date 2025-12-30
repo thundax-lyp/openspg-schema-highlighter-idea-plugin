@@ -2,13 +2,8 @@ package org.openspg.idea.conceptRule.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.conceptRule.psi.ConceptRuleConceptRuleDeclaration;
-import org.openspg.idea.conceptRule.psi.ConceptRuleTheActionDeclaration;
-import org.openspg.idea.conceptRule.psi.ConceptRuleTheGraphStructureDeclaration;
-import org.openspg.idea.conceptRule.psi.ConceptRuleTheRuleDeclaration;
+import org.openspg.idea.conceptRule.psi.*;
 import org.openspg.idea.schema.SchemaIcons;
 
 import java.util.ArrayList;
@@ -28,7 +23,7 @@ public class ConceptRuleConceptRuleDeclarationStructureViewElement extends Abstr
     @Override
     protected PresentationData createPresentation(ConceptRuleConceptRuleDeclaration element) {
         return new PresentationData(
-                element.getMajorLabel(),
+                "Define " + element.getMajorLabel(),
                 element.getMinorLabel(),
                 SchemaIcons.Nodes.Entity,
                 null
@@ -37,27 +32,20 @@ public class ConceptRuleConceptRuleDeclarationStructureViewElement extends Abstr
 
     @Override
     public TreeElement @NotNull [] getChildren() {
-        List<PsiElement> elements = PsiTreeUtil.getChildrenOfAnyType(
-                myElement.getConceptRuleBody(),
-                ConceptRuleTheGraphStructureDeclaration.class,
-                ConceptRuleTheRuleDeclaration.class,
-                ConceptRuleTheActionDeclaration.class
-        );
+        List<TreeElement> treeElements = new ArrayList<>();
 
-        List<TreeElement> treeElements = new ArrayList<>(elements.size());
+        for (ConceptRuleConceptRuleItem item : myElement.getConceptRuleBody().getConceptRuleItemList()) {
+            if (item.getTheGraphStructureDeclaration() != null) {
+                treeElements.add(new ConceptRuleTheGraphStructureDeclarationStructureViewElement(item.getTheGraphStructureDeclaration()));
 
-        for (PsiElement element : elements) {
-            if (element instanceof ConceptRuleTheGraphStructureDeclaration theGraphElement) {
-                treeElements.add(new ConceptRuleTheGraphStructureDeclarationStructureViewElement(theGraphElement));
+            } else if (item.getTheRuleDeclaration() != null) {
+                treeElements.add(new ConceptRuleTheRuleDeclarationStructureViewElement(item.getTheRuleDeclaration()));
 
-            } else if (element instanceof ConceptRuleTheRuleDeclaration theRuleElement) {
-                treeElements.add(new ConceptRuleTheRuleDeclarationStructureViewElement(theRuleElement));
-
-            } else if (element instanceof ConceptRuleTheActionDeclaration theActionElement) {
-                treeElements.add(new ConceptRuleTheActionDeclarationStructureViewElement(theActionElement));
+            } else if (item.getTheActionDeclaration() != null) {
+                treeElements.add(new ConceptRuleTheActionDeclarationStructureViewElement(item.getTheActionDeclaration()));
 
             } else {
-                throw new IllegalArgumentException("Unknown element type: " + element.getClass().getName());
+                throw new IllegalArgumentException("Unknown element type: " + item.getClass().getName());
             }
         }
 
