@@ -158,7 +158,7 @@ public class SchemaPsiImplUtil {
     public static Map<String, Object> toJson(SchemaProperty element) {
         Map<String, Object> result = element.getPropertyHead().getBasicPropertyDeclaration().toJson();
         if (element.getPropertyBody() != null) {
-            result.put("properties", element.getPropertyBody()
+            result.put("children", element.getPropertyBody()
                     .getEntityList()
                     .stream()
                     .map(SchemaPsiImplUtil::toJson)

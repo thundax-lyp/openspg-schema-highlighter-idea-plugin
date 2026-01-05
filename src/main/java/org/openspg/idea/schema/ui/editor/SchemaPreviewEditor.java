@@ -81,8 +81,9 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
         myNamespaceModel = elementToModel(namespace);
 
         myEntityModels.clear();
-        PsiTreeUtil.getChildrenOfTypeAsList(psiFile, SchemaEntity.class)
+        PsiTreeUtil.getChildrenOfTypeAsList(psiFile, SchemaRootEntity.class)
                 .stream()
+                .map(SchemaRootEntity::getEntity)
                 .map(this::elementToModel)
                 .forEach(myEntityModels::add);
     }
