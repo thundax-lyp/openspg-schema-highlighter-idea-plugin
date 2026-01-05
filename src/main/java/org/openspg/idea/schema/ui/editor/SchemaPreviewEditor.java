@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.openspg.idea.schema.psi.SchemaEntity;
 import org.openspg.idea.schema.psi.SchemaNamespace;
+import org.openspg.idea.schema.psi.SchemaRootEntity;
 import org.openspg.idea.schema.ui.editor.model.SchemaEntityModel;
 import org.openspg.idea.schema.ui.editor.model.SchemaNamespaceModel;
 import org.openspg.idea.schema.util.EditorUtils;
@@ -52,12 +53,12 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
     private SchemaNamespaceModel myNamespaceModel = new SchemaNamespaceModel();
 
     public SchemaPreviewEditor(Project project, VirtualFile file) {
-        this.myProject = project;
-        this.myFile = file;
+        myProject = project;
+        myFile = file;
 
-        this.myDocument = FileDocumentManager.getInstance().getDocument(myFile);
-        assert this.myDocument != null;
-        this.myDocument.addDocumentListener(this);
+        myDocument = FileDocumentManager.getInstance().getDocument(myFile);
+        assert myDocument != null;
+        myDocument.addDocumentListener(this);
 
         this.initModels();
 
@@ -74,16 +75,16 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
     }
 
     private void initModels() {
-        PsiFile psiFile = PsiManager.getInstance(this.myProject).findFile(this.myFile);
+        PsiFile psiFile = PsiManager.getInstance(myProject).findFile(myFile);
 
         SchemaNamespace namespace = PsiTreeUtil.getChildOfType(psiFile, SchemaNamespace.class);
-        this.myNamespaceModel = elementToModel(namespace);
+        myNamespaceModel = elementToModel(namespace);
 
-        this.myEntityModels.clear();
+        myEntityModels.clear();
         PsiTreeUtil.getChildrenOfTypeAsList(psiFile, SchemaEntity.class)
                 .stream()
                 .map(this::elementToModel)
-                .forEach(this.myEntityModels::add);
+                .forEach(myEntityModels::add);
     }
 
     @Override
@@ -164,83 +165,89 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
         return myFile;
     }
 
-
     @Override
     public void documentChanged(@NotNull DocumentEvent event) {
-        PsiDocumentManager.getInstance(myProject).commitDocument(event.getDocument());
-
-        PsiFile psiFile = PsiManager.getInstance(this.myProject).findFile(this.myFile);
-
-        SchemaNamespace namespace = PsiTreeUtil.getChildOfType(psiFile, SchemaNamespace.class);
-        this.myNamespaceModel = elementToModel(namespace);
-
-        List<SchemaEntityModel> lastEntityModels = this.myEntityModels
-                .stream()
-                .filter(model -> {
-                    // remove model if model.start between event.start and event.old-end
-                    int eventStart = event.getOffset();
-                    int eventEnd = event.getOffset() + event.getOldLength();
-                    if (eventStart <= model.getTextOffset() && model.getTextOffset() <= eventEnd) {
-                        logger.debug("remove model. name:" + model.getText());
-                        return false;
-                    }
-                    return true;
-                })
-                .peek(model -> {
-                    // update model.version to 0 if event.start between model.start and model.end
-                    // it will be modified if x.version is 0 during next step
-                    int modelStart = model.getTextOffset();
-                    int modelEnd = modelStart + model.getTextLength();
-                    if (modelStart < event.getOffset() && event.getOffset() <= modelEnd) {
-                        model.setVersion(0);
-                    }
-                })
-                .peek(model -> {
-                    // alignment model.start if model.start is larger than event.start
-                    if (model.getTextOffset() >= event.getOffset()) {
-                        model.setTextOffset(model.getTextOffset() + event.getNewLength() - event.getOldLength());
-                    }
-                })
-                .collect(Collectors.toList());
-
-        List<SchemaEntity> elements = PsiTreeUtil.getChildrenOfTypeAsList(psiFile, SchemaEntity.class);
-        Set<Integer> validElementOffsets = elements.stream()
-                .map(SchemaEntity::getTextOffset)
-                .collect(Collectors.toSet());
-        lastEntityModels.removeIf(model -> !validElementOffsets.contains(model.getTextOffset()));
-
-        Set<Integer> validModelOffsets = lastEntityModels.stream()
-                .map(SchemaEntityModel::getTextOffset)
-                .collect(Collectors.toSet());
-        elements.forEach(element -> {
-            // add new model if element.start between event.start and event.end
-            if (!validModelOffsets.contains(element.getTextOffset())) {
-                lastEntityModels.add(SchemaPreviewEditor.this.elementToModel(element));
+        PsiDocumentManager.getInstance(myProject).performLaterWhenAllCommitted(() -> {
+            PsiFile psiFile = PsiDocumentManager.getInstance(myProject).getPsiFile(event.getDocument());
+            if (psiFile == null) {
+                return;
             }
-        });
+            SchemaNamespace namespace = PsiTreeUtil.getChildOfType(psiFile, SchemaNamespace.class);
+            myNamespaceModel = elementToModel(namespace);
 
-        lastEntityModels.forEach(model -> {
-            // update model if model.version is 0
-            if (model.getVersion() == 0) {
-                SchemaEntity entity = elements
+            List<SchemaEntityModel> finalEntityModels = myEntityModels
+                    .stream()
+                    .filter(model -> {
+                        /*
+                         * Step 1: delete disappeared entity
+                         *         if an entity's start between event-start and event-end, it is disappeared
+                         */
+                        int eventStart = event.getOffset();
+                        int eventEnd = event.getOffset() + event.getOldLength();
+                        return eventStart > model.getStart() || model.getStart() > eventEnd;
+                    })
+                    .peek(model -> {
+                        /*
+                         * Step 2: update entity start
+                         *         alignment entity.start if entity.start is larger than event.start
+                         * NOTICE: entity.start will be the key of entity
+                         */
+                        if (model.getStart() >= event.getOffset()) {
+                            model.setStart(model.getStart() + event.getNewLength() - event.getOldLength());
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            /*
+             * Step 3: delete invalid entity from finalEntityModels by entity-start
+             */
+            List<SchemaEntity> currentEntities = PsiTreeUtil.getChildrenOfTypeAsList(psiFile, SchemaRootEntity.class)
+                    .stream()
+                    .map(SchemaRootEntity::getEntity)
+                    .toList();
+            Set<Integer> validEntityStart = currentEntities.stream()
+                    .map(SchemaEntity::getTextOffset)
+                    .collect(Collectors.toSet());
+            finalEntityModels.removeIf(model -> !validEntityStart.contains(model.getStart()));
+
+            /*
+             * Step 4: append new entities to finalEntityModels
+             */
+            Set<Integer> currentModelStarts = finalEntityModels.stream()
+                    .map(SchemaEntityModel::getStart)
+                    .collect(Collectors.toSet());
+            currentEntities.forEach(element -> {
+                // add new model if element.start between event.start and event.end
+                if (!currentModelStarts.contains(element.getTextOffset())) {
+                    finalEntityModels.add(SchemaPreviewEditor.this.elementToModel(element));
+                }
+            });
+
+            /*
+             * Step 5: update properties (expect id) of finalEntityModels
+             */
+            finalEntityModels.forEach(model -> {
+                SchemaEntity entity = currentEntities
                         .stream()
-                        .filter(element -> element.getTextOffset() == model.getTextOffset())
+                        .filter(element -> element.getTextOffset() == model.getStart())
                         .findFirst()
                         .orElse(null);
                 assert entity != null;
                 elementToModel(entity, model);
+            });
+
+            /*
+             * Step 6: sort finalEntityModels and update to myEntityModels
+             */
+            finalEntityModels.sort(Comparator.comparing(SchemaEntityModel::getStart));
+
+            myEntityModels.clear();
+            myEntityModels.addAll(finalEntityModels);
+
+            if (myPanel != null) {
+                myPanel.updateSchema(this.buildSchemaString());
             }
         });
-
-        // sort models by x.start
-        lastEntityModels.sort(Comparator.comparing(SchemaEntityModel::getTextOffset));
-
-        this.myEntityModels.clear();
-        this.myEntityModels.addAll(lastEntityModels);
-
-        if (myPanel != null) {
-            myPanel.updateSchema(this.buildSchemaString());
-        }
     }
 
     private SchemaNamespaceModel elementToModel(SchemaNamespace element) {
@@ -252,9 +259,7 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
     }
 
     private SchemaEntityModel elementToModel(SchemaEntity element, SchemaEntityModel model) {
-        model.setVersion(System.currentTimeMillis());
-        model.setTextOffset(element.getTextOffset());
-        model.setTextLength(element.getTextLength());
+        model.setStart(element.getTextOffset());
         model.setText(element.getText());
         model.setJsonValue(element.toJson());
         return model;
@@ -268,8 +273,8 @@ public class SchemaPreviewEditor extends UserDataHolderBase implements FileEdito
 
     private String buildSchemaString() {
         Map<String, Object> map = new HashMap<>();
-        map.put("namespace", this.myNamespaceModel.getJsonValue());
-        map.put("entities", this.myEntityModels
+        map.put("namespace", myNamespaceModel.getJsonValue());
+        map.put("entities", myEntityModels
                 .stream()
                 .map(model -> {
                     Map<String, Object> data = model.getJsonValue();
