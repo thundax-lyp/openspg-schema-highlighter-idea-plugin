@@ -17,6 +17,7 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>version 0.0.17</b> SchemaML: optimize preview</li>
             <li><b>version 0.0.16</b> RuleML: bug fixed</li>
             <li><b>version 0.0.15</b> SchemaML: optimize preview</li>
             <li><b>version 0.0.14</b> RuleML: upgrade formatter</li>
