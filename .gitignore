@@ -4,3 +4,8 @@
 /gradle/
 /src/main/resources/static/assets/
 /src/main/gen/
+/docs/**/.idea/
+/docs/**/*.schema
+/docs/**/*.rule
+/docs/idea-flex.skeleton
+/docs/jflex-1.9.2.jar
