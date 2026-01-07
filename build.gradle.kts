@@ -25,7 +25,8 @@ sourceSets {
 }
 
 intellij {
-    version.set("2023.1")
+//    version.set("2023.1")
+    version.set("2025.3")
     type.set("IC")
 
     plugins.set(listOf("com.intellij.java"))
