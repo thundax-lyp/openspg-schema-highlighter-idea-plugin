@@ -8,8 +8,8 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.conceptRule.psi.ConceptRuleTypes;
 import org.openspg.idea.schema.lexer.SchemaLexerAdapter;
+import org.openspg.idea.schema.psi.SchemaTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class SchemaSyntaxHighlighter extends SyntaxHighlighterBase {
         fillMap(ourMap, BASIC_KEYWORD_BIT_SET, SchemaHighlightingColors.KEYWORD);
         fillMap(ourMap, BASIC_OPERATION_BIT_SET, SchemaHighlightingColors.OPERATION_SIGN);
 
-        ourMap.put(ConceptRuleTypes.LINE_COMMENT, SchemaHighlightingColors.COMMENT);
+        ourMap.put(SchemaTypes.LINE_COMMENT, SchemaHighlightingColors.COMMENT);
 
         ourMap.put(TokenType.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
     }
