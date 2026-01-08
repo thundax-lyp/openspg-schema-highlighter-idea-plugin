@@ -24,6 +24,10 @@ An IDEA plugin for OpenSPG Schema Mark Language
 - Preview
 - Folding
 
+## Generated Sources
+
+- `src/main/gen` is generated from the grammar/lexer definitions. Do not edit files in this directory by hand.
+
 ## TODO
 
 - Annotator

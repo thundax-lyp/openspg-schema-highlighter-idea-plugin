@@ -4,6 +4,7 @@
 - `src/main/java`: plugin source code (schema and concept rule language support).
 - `src/main/lexer`: grammar and lexer specs (`.bnf`, `.flex`).
 - `src/main/gen`: generated PSI/lexer/parser sources; do not edit by hand.
+  - 来源于 `src/main/lexer` 下的 `.bnf`/`.flex`，修改语法后需重新生成。
 - `src/main/resources`: plugin resources (e.g., `META-INF/plugin.xml`, icons, static preview assets).
 - `docs`: screenshots and example schema/rule files used for documentation.
 - `build.gradle.kts`: Gradle build, IntelliJ plugin configuration, and publishing tasks.
@@ -24,6 +25,10 @@
 ## Testing Guidelines
 - No automated tests are present; validate changes via `./gradlew runIde` and example files in `docs/OpenSPG_Schema_Examples`.
 - If adding tests, place them under `src/test/java` and wire them into Gradle.
+- Manual test checklist for `./gradlew runIde`:
+  - Open `.schema` and `.concept.rule` files; verify syntax highlighting and structure view.
+  - Trigger completion and formatter; confirm no errors in the IDE event log.
+  - Open the preview/editor split; confirm preview renders and responds to edits.
 
 ## Commit & Pull Request Guidelines
 - Recent history uses concise messages like `Fix(Schema): update preview` and `refactor`.
