@@ -29,7 +29,7 @@ public class ConceptRuleFoldingBuilder extends FoldingBuilderEx implements DumbA
 
     @Override
     @SuppressWarnings("unchecked")
-    public FoldingDescriptor @NotNull [] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
+    public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
         Class<? extends PsiElement>[] classes = adapters
                 .stream()
                 .map(FoldingAdapter::getType)
