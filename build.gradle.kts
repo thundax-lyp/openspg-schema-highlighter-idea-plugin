@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation("com.alibaba:fastjson:2.0.57")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 
     intellijPlatform {
         intellijIdeaCommunity("2023.1")
@@ -61,5 +62,8 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
+    }
+    test {
+        useJUnitPlatform()
     }
 }
