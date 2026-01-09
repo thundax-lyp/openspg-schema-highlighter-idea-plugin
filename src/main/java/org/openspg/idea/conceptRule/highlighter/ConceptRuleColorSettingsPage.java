@@ -87,12 +87,12 @@ final class ConceptRuleColorSettingsPage implements ColorSettingsPage {
     }
 
     @Override
-    public AttributesDescriptor @NotNull [] getAttributeDescriptors() {
+    public AttributesDescriptor[] getAttributeDescriptors() {
         return DESCRIPTORS;
     }
 
     @Override
-    public ColorDescriptor @NotNull [] getColorDescriptors() {
+    public ColorDescriptor[] getColorDescriptors() {
         return ColorDescriptor.EMPTY_ARRAY;
     }
 

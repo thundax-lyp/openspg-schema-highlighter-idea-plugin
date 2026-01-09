@@ -67,7 +67,7 @@ public class ConceptRuleSyntaxHighlighter extends SyntaxHighlighterBase {
     }
 
     @Override
-    public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+    public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
         return pack(ourMap.get(tokenType));
     }
 
