@@ -80,7 +80,7 @@ abstract class AbstractSchemaStructureViewElement<T extends PsiElement> implemen
         return null;
     }
 
-    protected TreeElement @NotNull [] buildEntityTreeElements(List<SchemaEntity> elements) {
+    protected TreeElement[] buildEntityTreeElements(List<SchemaEntity> elements) {
         List<TreeElement> treeElements = new ArrayList<>(elements.size());
 
         for (SchemaEntity element : elements) {
@@ -90,7 +90,7 @@ abstract class AbstractSchemaStructureViewElement<T extends PsiElement> implemen
         return treeElements.toArray(new TreeElement[0]);
     }
 
-    protected TreeElement @NotNull [] buildPropertyTreeElements(List<SchemaProperty> elements) {
+    protected TreeElement[] buildPropertyTreeElements(List<SchemaProperty> elements) {
         List<TreeElement> treeElements = new ArrayList<>(elements.size());
 
         for (SchemaProperty element : elements) {

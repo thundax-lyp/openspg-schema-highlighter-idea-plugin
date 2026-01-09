@@ -21,7 +21,7 @@ public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenc
     }
 
     @Override
-    public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
+    public ResolveResult[] multiResolve(boolean incompleteCode) {
         return PsiTreeUtil.findChildrenOfType(myElement.getContainingFile(), SchemaRootEntity.class)
                 .stream()
                 .map(SchemaRootEntity::getEntity)
@@ -35,7 +35,7 @@ public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenc
     }
 
     @Override
-    public Object @NotNull [] getVariants() {
+    public Object[] getVariants() {
         return PsiTreeUtil.getChildrenOfTypeAsList(myElement.getContainingFile(), SchemaRootEntity.class)
                 .stream()
                 .map(x -> LookupElementBuilder

@@ -22,7 +22,7 @@ public class SchemaFileStructureViewElement extends AbstractSchemaStructureViewE
     }
 
     @Override
-    public TreeElement @NotNull [] getChildren() {
+    public TreeElement[] getChildren() {
         List<SchemaEntity> elements = PsiTreeUtil.getChildrenOfTypeAsList(myElement, SchemaRootEntity.class)
                 .stream()
                 .map(SchemaRootEntity::getEntity)

@@ -2,7 +2,6 @@ package org.openspg.idea.schema.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.schema.SchemaIcons;
 import org.openspg.idea.schema.psi.SchemaBasicStructureDeclaration;
 import org.openspg.idea.schema.psi.SchemaEntity;
@@ -36,7 +35,7 @@ public class SchemaEntityStructureViewElement extends AbstractSchemaStructureVie
     }
 
     @Override
-    public TreeElement @NotNull [] getChildren() {
+    public TreeElement[] getChildren() {
         if (myElement.getEntityBody() == null) {
             return EMPTY_ARRAY;
         }

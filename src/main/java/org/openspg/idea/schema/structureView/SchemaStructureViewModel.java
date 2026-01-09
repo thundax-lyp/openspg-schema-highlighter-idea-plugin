@@ -18,7 +18,7 @@ public class SchemaStructureViewModel extends StructureViewModelBase implements 
     }
 
     @NotNull
-    public Sorter @NotNull [] getSorters() {
+    public Sorter[] getSorters() {
         return new Sorter[]{Sorter.ALPHA_SORTER};
     }
 
@@ -34,7 +34,7 @@ public class SchemaStructureViewModel extends StructureViewModelBase implements 
     }
 
     @Override
-    protected Class<?> @NotNull [] getSuitableClasses() {
+    protected Class<?>[] getSuitableClasses() {
         return new Class[]{
                 SchemaEntityHead.class,
         };
