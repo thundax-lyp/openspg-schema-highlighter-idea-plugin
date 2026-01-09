@@ -17,11 +17,13 @@ repositories {
 
 dependencies {
     implementation("com.alibaba:fastjson:2.0.57")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 
     intellijPlatform {
-        intellijIdeaCommunity("2023.1")
+        intellijIdeaCommunity("2024.2")
         bundledPlugin("com.intellij.java")
+        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
         pluginVerifier()
         zipSigner()
     }
@@ -38,7 +40,7 @@ sourceSets {
 intellijPlatform {
     pluginConfiguration {
         ideaVersion {
-            sinceBuild.set("231")
+            sinceBuild.set("242")
 //            untilBuild.set("252.*")
         }
     }
