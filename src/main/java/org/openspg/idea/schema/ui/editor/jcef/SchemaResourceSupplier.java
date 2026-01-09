@@ -12,6 +12,6 @@ public abstract class SchemaResourceSupplier {
     public interface Resource {
         @NotNull String getContentType();
 
-        byte @NotNull [] getContent();
+        byte[] getContent();
     }
 }

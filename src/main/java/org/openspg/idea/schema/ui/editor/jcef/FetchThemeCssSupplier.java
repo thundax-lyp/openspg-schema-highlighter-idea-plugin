@@ -32,7 +32,7 @@ public class FetchThemeCssSupplier extends SchemaResourceSupplier {
             }
 
             @Override
-            public byte @NotNull [] getContent() {
+            public byte[] getContent() {
                 if (resourceBytes != null && UIUtils.isDarkTheme() == isDarkTheme) {
                     return resourceBytes;
                 }

@@ -35,8 +35,9 @@ public class FocusEntityApiSupplier extends SchemaResourceSupplier {
                 return "application/json; charset=utf-8";
             }
 
+            @NotNull
             @Override
-            public byte @NotNull [] getContent() {
+            public byte[] getContent() {
                 Map<String, Object> map = new HashMap<>();
 
                 try {

@@ -29,7 +29,7 @@ public class FetchSchemaApiSupplier extends SchemaResourceSupplier {
             }
 
             @Override
-            public byte @NotNull [] getContent() {
+            public byte[] getContent() {
                 return supplier.get();
             }
         };
