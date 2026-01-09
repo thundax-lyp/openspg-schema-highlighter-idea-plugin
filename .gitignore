@@ -3,6 +3,7 @@
 /.intellijPlatform/
 /build/
 /gradle/
+/out/
 /src/main/resources/static/assets/
 /src/main/gen/
 /docs/**/.idea/
