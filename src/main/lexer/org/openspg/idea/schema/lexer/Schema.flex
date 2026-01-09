@@ -328,6 +328,10 @@ COMMENT = "#"{LINE}
           yypushback(yylength());
       }
 
+    {DOUBLE_QUOTED_STRING}   { return STRING_LITERAL;  }
+    {SINGLE_QUOTED_STRING}   { return STRING_LITERAL;  }
+    {GRAVE_QUOTED_STRING}    { return STRING_LITERAL;  }
+
     [Ii][Ss][Aa] {
           return IS_A_KEYWORD;
       }
