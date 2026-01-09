@@ -2,7 +2,7 @@
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.10.0"
 }
 
 group = "org.openspg.idea"
@@ -10,10 +10,20 @@ version = "0.0.17"
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
     implementation("com.alibaba:fastjson:2.0.57")
+
+    intellijPlatform {
+        intellijIdeaCommunity("2023.1")
+        bundledPlugin("com.intellij.java")
+        pluginVerifier()
+        zipSigner()
+    }
 }
 
 sourceSets {
@@ -24,12 +34,23 @@ sourceSets {
     }
 }
 
-intellij {
-//    version.set("2023.1")
-    version.set("2025.3")
-    type.set("IC")
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild.set("231")
+//            untilBuild.set("252.*")
+        }
+    }
 
-    plugins.set(listOf("com.intellij.java"))
+    signing {
+        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
+        privateKey.set(System.getenv("PRIVATE_KEY"))
+        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+    }
+
+    publishing {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+    }
 }
 
 tasks {
@@ -40,20 +61,5 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
-    }
-
-    patchPluginXml {
-        sinceBuild.set("231")
-//        untilBuild.set("252.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
