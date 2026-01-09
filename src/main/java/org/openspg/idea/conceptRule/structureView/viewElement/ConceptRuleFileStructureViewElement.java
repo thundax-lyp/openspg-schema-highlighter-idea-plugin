@@ -24,7 +24,7 @@ public class ConceptRuleFileStructureViewElement extends AbstractConceptRuleStru
     }
 
     @Override
-    public TreeElement @NotNull [] getChildren() {
+    public TreeElement[] getChildren() {
         List<PsiElement> elements = PsiTreeUtil.getChildrenOfAnyType(
                 myElement,
                 ConceptRuleRuleWrapperDeclaration.class,

@@ -2,7 +2,6 @@ package org.openspg.idea.conceptRule.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.conceptRule.psi.ConceptRuleTheGraphStructureDeclaration;
 import org.openspg.idea.schema.SchemaIcons;
 
@@ -29,7 +28,7 @@ public class ConceptRuleTheGraphStructureDeclarationStructureViewElement extends
     }
 
     @Override
-    public TreeElement @NotNull [] getChildren() {
+    public TreeElement[] getChildren() {
         return TreeElement.EMPTY_ARRAY;
     }
 

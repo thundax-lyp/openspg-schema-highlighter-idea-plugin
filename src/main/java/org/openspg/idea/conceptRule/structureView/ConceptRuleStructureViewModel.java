@@ -19,7 +19,7 @@ public class ConceptRuleStructureViewModel extends StructureViewModelBase implem
     }
 
     @NotNull
-    public Sorter @NotNull [] getSorters() {
+    public Sorter[] getSorters() {
         return new Sorter[]{Sorter.ALPHA_SORTER};
     }
 
@@ -35,7 +35,7 @@ public class ConceptRuleStructureViewModel extends StructureViewModelBase implem
     }
 
     @Override
-    protected Class<?> @NotNull [] getSuitableClasses() {
+    protected Class<?>[] getSuitableClasses() {
         return new Class[]{
                 ConceptRuleRuleWrapperDeclaration.class,
         };
