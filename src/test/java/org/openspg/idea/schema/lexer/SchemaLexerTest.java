@@ -18,6 +18,11 @@ public class SchemaLexerTest extends BasePlatformTestCase {
         return new File("src/test/resources/testFixture").getAbsolutePath();
     }
 
+    /**
+     * Scenario: single-line namespace declaration
+     * Focus: keyword and identifier tokenization
+     * Assert: token sequence and content match
+     */
     public void testNamespace() {
         String text = """
                 namespace LexerSample
@@ -34,6 +39,11 @@ public class SchemaLexerTest extends BasePlatformTestCase {
     }
 
 
+    /**
+     * Scenario: entity head with a first-level property
+     * Focus: entity head tokens and indent/string tokens
+     * Assert: token sequence matches indentation levels
+     */
     public void testEntity() {
         String text = """
                 Person(人物): EntityType
@@ -61,6 +71,11 @@ public class SchemaLexerTest extends BasePlatformTestCase {
         );
     }
 
+    /**
+     * Scenario: multi-level indentation with inherited entity
+     * Focus: INDENT/DEDENT pairing and inheritance arrow
+     * Assert: token sequence is complete and ordered
+     */
     public void testInheritedEntity() {
         String text = """
                 Person(人物): EntityType

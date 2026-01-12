@@ -18,6 +18,11 @@ public class SchemaParserTest extends BasePlatformTestCase {
         return new File("src/test/resources/testFixture").getAbsolutePath();
     }
 
+    /**
+     * Scenario: basic sample with namespace, entity, and property
+     * Focus: namespace/entity head/property parsing coverage
+     * Assert: namespace, entity name/alias/types, property name/value match
+     */
     public void testNamespaceAndEntity() {
         String text = """
                 namespace Sample
@@ -43,6 +48,11 @@ public class SchemaParserTest extends BasePlatformTestCase {
         assertEquals("\"a great man\"", property.getValue());
     }
 
+    /**
+     * Scenario: entity inheritance declaration
+     * Focus: inherited type list and alias parsing
+     * Assert: type order and entity name/alias match
+     */
     public void testInheritedTypes() {
         String text = """
                 Artist("艺术家") -> Person, Star:
@@ -56,6 +66,11 @@ public class SchemaParserTest extends BasePlatformTestCase {
         assertEquals(List.of("Person", "Star"), entity.getTypes());
     }
 
+    /**
+     * Scenario: properties block with child entities
+     * Focus: properties block and child entity parsing
+     * Assert: child entity count and names match
+     */
     public void testPropertyBody() {
         String text = """
                 Person(人物): EntityType
