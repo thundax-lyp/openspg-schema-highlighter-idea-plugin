@@ -82,7 +82,7 @@ builtin_property_name ::=
             | SPREADABLE_KEYWORD | AUTORELATE_KEYWORD | CONSTRAINT_KEYWORD | RULE_KEYWORD | INDEX_KEYWORD
 
 property_value_declaration ::= property_value_variable
-property_value_variable ::= builtin_property_value | plain_text_block | TEXT+
+property_value_variable ::= builtin_property_value | plain_text_block | (TEXT | STRING_LITERAL)+
 builtin_property_value ::=
             IS_A_KEYWORD | LOCATE_AT_KEYWORD | MANNER_OF_KEYWORD | TEXT_KEYWORD | VECTOR_KEYWORD | TEXT_AND_VECTOR_KEYWORD
             | SPARSE_VECTOR_KEYWORD | TEXT_AND_SPARSE_VECTOR_KEYWORD | NOT_NULL_KEYWORD | MULTI_VALUE_KEYWORD
