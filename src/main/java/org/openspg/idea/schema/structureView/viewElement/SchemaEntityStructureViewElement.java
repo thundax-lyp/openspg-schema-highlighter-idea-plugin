@@ -36,11 +36,7 @@ public class SchemaEntityStructureViewElement extends AbstractSchemaStructureVie
 
     @Override
     public TreeElement[] getChildren() {
-        if (myElement.getEntityBody() == null) {
-            return EMPTY_ARRAY;
-        }
-
-        return this.buildPropertyTreeElements(myElement.getEntityBody().getPropertyList());
+        return this.buildPropertyTreeElements(myElement.getProperties());
     }
 
     private Icon getIcon(SchemaEntity element) {

@@ -42,11 +42,7 @@ public class SchemaPropertyStructureViewElement extends AbstractSchemaStructureV
 
     @Override
     public TreeElement[] getChildren() {
-        if (myElement.getPropertyBody() == null) {
-            return EMPTY_ARRAY;
-        }
-
-        return this.buildEntityTreeElements(myElement.getPropertyBody().getEntityList());
+        return this.buildEntityTreeElements(myElement.getEntities());
     }
 
     private Icon getIcon(SchemaProperty element) {
