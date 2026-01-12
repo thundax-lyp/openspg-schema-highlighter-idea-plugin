@@ -1,15 +1,13 @@
 package org.openspg.idea;
 
-import org.junit.jupiter.api.Test;
+import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+public class PluginSmokeTest extends BasePlatformTestCase {
 
-class PluginSmokeTest {
-    @Test
-    void junitIsWired() {
-        System.out.println("=".repeat(40));
-        System.out.println("junit is wired");
+    public void testPlatform() {
         System.out.println("=".repeat(40));
         assertTrue(true);
+        System.out.println("BasePlatformTestCase is wired");
+        System.out.println("=".repeat(40));
     }
 }

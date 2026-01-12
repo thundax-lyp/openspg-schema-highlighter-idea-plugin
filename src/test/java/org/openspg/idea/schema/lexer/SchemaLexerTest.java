@@ -5,12 +5,10 @@ import com.intellij.lexer.Lexer;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.openspg.idea.schema.psi.SchemaTypes.*;
 
 public class SchemaLexerTest extends BasePlatformTestCase {
@@ -20,30 +18,30 @@ public class SchemaLexerTest extends BasePlatformTestCase {
         return new File("src/test/resources/testFixture").getAbsolutePath();
     }
 
-    @Test
     public void testNamespace() {
         String text = """
                 namespace LexerSample
                 """;
 
-        assertLinesMatch(
+        assertEquals(
+                "Lexer: Namespace",
                 prettier(List.of(
                         new SchemaToken(NAMESPACE_KEYWORD, "namespace"),
                         new SchemaToken(IDENTIFIER, "LexerSample")
                 )),
-                prettier(lexerTokens(text)),
-                "Lexer: Namespace");
+                prettier(lexerTokens(text))
+        );
     }
 
 
-    @Test
     public void testEntity() {
         String text = """
                 Person(人物): EntityType
                     desc: "a great man"
                 """;
 
-        assertLinesMatch(
+        assertEquals(
+                "Lexer: Entity",
                 prettier(List.of(
                         // Person(人物): EntityType
                         new SchemaToken(IDENTIFIER, "Person"),
@@ -59,11 +57,10 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                         new SchemaToken(STRING_LITERAL, "\"a great man\""),
                         new SchemaToken(DEDENT, "")
                 )),
-                prettier(lexerTokens(text)),
-                "Lexer: Entity");
+                prettier(lexerTokens(text))
+        );
     }
 
-    @Test
     public void testInheritedEntity() {
         String text = """
                 Person(人物): EntityType
@@ -74,7 +71,8 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                     desc: "a great man"
                 """;
 
-        assertLinesMatch(
+        assertEquals(
+                "Lexer: Inherited entity",
                 prettier(List.of(
                         // Person(人物): EntityType
                         new SchemaToken(IDENTIFIER, "Person"), new SchemaToken(LPARENTH, "("),
@@ -111,8 +109,8 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                         new SchemaToken(STRING_LITERAL, "\"a great man\""),
                         new SchemaToken(DEDENT, "")
                 )),
-                prettier(lexerTokens(text)),
-                "Lexer: Inherited entity");
+                prettier(lexerTokens(text))
+        );
     }
 
     private static List<SchemaToken> lexerTokens(String text) {
@@ -131,11 +129,12 @@ public class SchemaLexerTest extends BasePlatformTestCase {
         return tokens;
     }
 
-    private List<String> prettier(List<SchemaToken> tokens) {
-        return tokens
+    private String prettier(List<SchemaToken> tokens) {
+        return String.join("\n", tokens
                 .stream()
                 .map(Object::toString)
-                .toList();
+                .toList()
+        );
     }
 
     public static class SchemaToken {
