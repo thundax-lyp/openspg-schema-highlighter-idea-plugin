@@ -103,7 +103,7 @@ plain_text_content ::= PLAIN_TEXT+ {
 root_entity ::= entity
 
 entity ::= entity_head entity_body? {
-    methods=[getName getLevel isBodyEmpty toJson]
+    methods=[getName getAliasName getTypes getProperties getLevel isBodyEmpty toJson]
 }
 entity_head ::= basic_structure_declaration {
     mixin="org.openspg.idea.schema.psi.impl.SchemaNamedElementImpl"
@@ -120,7 +120,7 @@ entity_body ::= INDENT property+ DEDENT
  *     desc: 文本块
  */
 property ::= property_head property_body? {
-    methods=[getLevel isBodyEmpty toJson]
+    methods=[getName getValue getEntities getLevel isBodyEmpty toJson]
 }
 property_head ::= basic_property_declaration
 property_body ::= INDENT entity+ DEDENT

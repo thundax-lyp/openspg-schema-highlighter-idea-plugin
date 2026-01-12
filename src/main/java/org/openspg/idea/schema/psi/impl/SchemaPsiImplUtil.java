@@ -107,8 +107,31 @@ public class SchemaPsiImplUtil {
         return element.getEntityHead().getName();
     }
 
+    public static String getAliasName(SchemaEntity element) {
+        return element
+                .getEntityHead()
+                .getBasicStructureDeclaration()
+                .getStructureAliasDeclaration()
+                .getText();
+    }
+
+    public static List<String> getTypes(SchemaEntity element) {
+        return element
+                .getEntityHead()
+                .getBasicStructureDeclaration()
+                .getStructureTypeDeclaration()
+                .getTypes();
+    }
+
     public static int getLevel(SchemaEntity element) {
         return getEntityLevel(element);
+    }
+
+    public static List<SchemaProperty> getProperties(SchemaEntity element) {
+        if (element.getEntityBody() == null) {
+            return new ArrayList<>();
+        }
+        return element.getEntityBody().getPropertyList();
     }
 
     public static boolean isBodyEmpty(SchemaEntity element) {
@@ -143,12 +166,26 @@ public class SchemaPsiImplUtil {
         return element.getBasicStructureDeclaration().getStructureNameDeclaration();
     }
 
-
     // ============================================
     // SchemaProperty methods
     //
+    public static String getName(SchemaProperty element) {
+        return element.getPropertyHead().getBasicPropertyDeclaration().getName();
+    }
+
+    public static String getValue(SchemaProperty element) {
+        return element.getPropertyHead().getBasicPropertyDeclaration().getValue();
+    }
+
     public static int getLevel(SchemaProperty element) {
         return getEntityLevel(element);
+    }
+
+    public static List<SchemaEntity> getEntities(SchemaProperty element) {
+        if (element.getPropertyBody() == null) {
+            return new ArrayList<>();
+        }
+        return element.getPropertyBody().getEntityList();
     }
 
     public static boolean isBodyEmpty(SchemaProperty element) {
