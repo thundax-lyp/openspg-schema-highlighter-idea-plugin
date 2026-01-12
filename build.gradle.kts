@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id("java")
@@ -6,7 +7,7 @@ plugins {
 }
 
 group = "org.openspg.idea"
-version = "0.0.17"
+version = "0.0.18-dev"
 
 repositories {
     mavenCentral()
@@ -17,22 +18,21 @@ repositories {
 
 dependencies {
     implementation("com.alibaba:fastjson:2.0.57")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 
     intellijPlatform {
         intellijIdeaCommunity("2024.2")
         bundledPlugin("com.intellij.java")
-        testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
-        pluginVerifier()
-        zipSigner()
+        testFramework(TestFrameworkType.Platform)
     }
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.opentest4j:opentest4j:1.3.0")
 }
 
 sourceSets {
     main {
         java {
-            srcDirs("src/main/gen")
+            srcDir("src/main/gen")
         }
     }
 }
@@ -66,6 +66,10 @@ tasks {
         kotlinOptions.jvmTarget = "17"
     }
     test {
-        useJUnitPlatform()
+        useJUnit()
+        testLogging {
+            events("passed", "skipped", "failed")
+            showStandardStreams = true
+        }
     }
 }
