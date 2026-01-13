@@ -1,7 +1,6 @@
 package org.openspg.idea.schema.formatter;
 
 import com.intellij.application.options.CodeStyle;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
@@ -90,10 +89,13 @@ public class SchemaFormatterTest extends BasePlatformTestCase {
     }
 
     private void assertReformat(String input, String expected) {
-        PsiFile file = myFixture.configureByText(SchemaFileType.INSTANCE, input);
+        myFixture.configureByText(SchemaFileType.INSTANCE, input);
         WriteCommandAction.runWriteCommandAction(getProject(), () -> {
             CodeStyleManager manager = CodeStyleManager.getInstance(getProject());
-            manager.reformatText(file, List.of(file.getTextRange()));
+            manager.reformatText(
+                    myFixture.getFile(),
+                    List.of(myFixture.getFile().getTextRange())
+            );
         });
         myFixture.checkResult(expected);
     }
