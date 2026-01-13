@@ -1,4 +1,4 @@
-package org.openspg.idea.schema;
+package org.openspg.idea.schema.folding;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;

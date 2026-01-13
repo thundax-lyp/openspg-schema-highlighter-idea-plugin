@@ -102,7 +102,7 @@
 
         <lang.foldingBuilder
                 language="OpenSPG Schema"
-                implementationClass="org.openspg.idea.schema.SchemaFoldingBuilder"/>
+                implementationClass="org.openspg.idea.schema.folding.SchemaFoldingBuilder"/>
 
         <spellchecker.support
                 language="OpenSPG Schema"
