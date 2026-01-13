@@ -12,12 +12,12 @@ import org.openspg.idea.schema.reference.SchemaVariableStructureTypeReference;
 import java.util.*;
 
 /**
- * Validates allowed semantic names on schema structure elements.
+ * Validates inherited types have been defined.
  */
 public class SchemaInheritedStructureTypeProcessor implements AnnotateProcessor {
 
     /**
-     * Emits an error annotation when a semantic name is not in the allowlist.
+     * Emits an error annotation when inherited type is undefined.
      */
     public boolean process(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
         if (element instanceof SchemaVariableStructureType structureType) {
@@ -26,8 +26,8 @@ public class SchemaInheritedStructureTypeProcessor implements AnnotateProcessor 
                 holder.newAnnotation(HighlightSeverity.ERROR, element.getText())
                         .range(element.getTextRange())
                         .tooltip(SchemaBundle.message(
-                                "SchemaAnnotator.error.schema.undefined.type",
-                                structureType.getStructureName().getStructureRealName()))
+                                "SchemaAnnotator.error.undefined.type",
+                                structureType.getStructureName().getStructureRealName().getText()))
                         .create();
             }
         }
