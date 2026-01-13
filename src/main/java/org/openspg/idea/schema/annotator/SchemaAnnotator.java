@@ -23,6 +23,8 @@ final class SchemaAnnotator implements Annotator {
         myProcessors.add(new SchemaEntitySemanticNameProcessor());
         myProcessors.add(new SchemaEntityDepthProcessor());
         myProcessors.add(new SchemaInheritedStructureTypeProcessor());
+        myProcessors.add(new SchemaNamespaceProcessor());
+        myProcessors.add(new SchemaRootEntityProcessor());
     }
 
     /**
