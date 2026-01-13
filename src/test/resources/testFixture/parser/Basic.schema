@@ -1,0 +1,4 @@
+namespace ParserTestcase
+
+Person(人物): EntityType
+    desc: "a great man"

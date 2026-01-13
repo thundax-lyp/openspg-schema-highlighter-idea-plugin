@@ -1,0 +1,6 @@
+namespace ParserTestcase
+
+Person(人物): EntityType
+    properties:
+        birth(生日): Text
+        locatedIn(所在地): EntityType

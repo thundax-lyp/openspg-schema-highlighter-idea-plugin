@@ -1,0 +1,11 @@
+namespace ParserTestcase
+
+# Everyone has their own attributes
+Person(人物): EntityType
+    # all properties will be defined here
+    properties:
+        # a lucky day
+        birth(生日): Text
+        # the place where you are is the best place
+        locatedIn(所在地): EntityType
+# bala bala
