@@ -24,15 +24,15 @@ public class SchemaHighlightingProcessor implements AnnotateProcessor {
         if (element instanceof SchemaStructureSemanticName) {
             textAttributesKey = SchemaHighlightingColors.KEYWORD;
 
-        } else if (element instanceof SchemaStructureRealName) {
-            textAttributesKey = SchemaHighlightingColors.ENTITY_NAME;
-
         } else if (element instanceof SchemaStructureAliasDeclaration) {
             textAttributesKey = SchemaHighlightingColors.ENTITY_ALIAS;
 
-        } else if (element instanceof SchemaStructureName
-                && PsiTreeUtil.getParentOfType(element, SchemaStructureTypeDeclaration.class) != null) {
-            textAttributesKey = SchemaHighlightingColors.ENTITY_REFERENCE;
+        } else if (element instanceof SchemaStructureRealName) {
+            if (PsiTreeUtil.getParentOfType(element, SchemaStructureTypeDeclaration.class) != null) {
+                textAttributesKey = SchemaHighlightingColors.ENTITY_REFERENCE;
+            } else {
+                textAttributesKey = SchemaHighlightingColors.ENTITY_NAME;
+            }
         }
 
         if (textAttributesKey != null) {
