@@ -336,7 +336,8 @@ truthValue ::= TRUE_KEYWORD | FALSE_KEYWORD | NULL_KEYWORD
 unsignedNumericLiteral ::= numericLiteral
 sign ::= PLUS | MINUS
 
-complexObjExpression ::= LBRACE assignmentExpression* RBRACE
+// make 'complexObjExpression' private to flat layout nodes in 'objectFunctionParam'
+private complexObjExpression ::= LBRACE assignmentExpression* RBRACE
 
 assignmentExpression ::= identifier EQ expressionSet
 
