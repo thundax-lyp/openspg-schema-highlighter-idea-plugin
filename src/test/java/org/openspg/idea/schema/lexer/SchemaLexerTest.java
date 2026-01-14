@@ -1,21 +1,15 @@
 package org.openspg.idea.schema.lexer;
 
-import com.alibaba.fastjson.JSON;
-import com.intellij.lexer.Lexer;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import org.openspg.idea.common.AbstractLexerTestCase;
 
-import java.io.File;
 import java.util.*;
 
 import static org.openspg.idea.schema.psi.SchemaTypes.*;
 
-public class SchemaLexerTest extends BasePlatformTestCase {
+public class SchemaLexerTest extends AbstractLexerTestCase {
 
-    @Override
-    protected String getTestDataPath() {
-        return new File("src/test/resources/testFixture").getAbsolutePath();
+    public SchemaLexerTest() {
+        super(new SchemaLexerAdapter());
     }
 
     /**
@@ -28,14 +22,10 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                 namespace LexerSample
                 """;
 
-        assertEquals(
-                "Lexer: Namespace",
-                prettier(List.of(
-                        new SchemaToken(NAMESPACE_KEYWORD, "namespace"),
-                        new SchemaToken(IDENTIFIER, "LexerSample")
-                )),
-                prettier(lexerTokens(text))
-        );
+        assertTokens(text, List.of(
+                new CommonToken(NAMESPACE_KEYWORD, "namespace"),
+                new CommonToken(IDENTIFIER, "LexerSample")
+        ));
     }
 
 
@@ -50,25 +40,21 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                     desc: "a great man"
                 """;
 
-        assertEquals(
-                "Lexer: Entity",
-                prettier(List.of(
-                        // Person(人物): EntityType
-                        new SchemaToken(IDENTIFIER, "Person"),
-                        new SchemaToken(LPARENTH, "("),
-                        new SchemaToken(IDENTIFIER, "人物"),
-                        new SchemaToken(RPARENTH, ")"),
-                        new SchemaToken(COLON, ":"),
-                        new SchemaToken(ENTITY_TYPE_KEYWORD, "EntityType"),
-                        // \t desc: "a great man"
-                        new SchemaToken(INDENT, "    "),
-                        new SchemaToken(DESC_KEYWORD, "desc"),
-                        new SchemaToken(COLON, ":"),
-                        new SchemaToken(STRING_LITERAL, "\"a great man\""),
-                        new SchemaToken(DEDENT, "")
-                )),
-                prettier(lexerTokens(text))
-        );
+        assertTokens(text, List.of(
+                // Person(人物): EntityType
+                new CommonToken(IDENTIFIER, "Person"),
+                new CommonToken(LPARENTH, "("),
+                new CommonToken(IDENTIFIER, "人物"),
+                new CommonToken(RPARENTH, ")"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(ENTITY_TYPE_KEYWORD, "EntityType"),
+                // \t desc: "a great man"
+                new CommonToken(INDENT, "    "),
+                new CommonToken(DESC_KEYWORD, "desc"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(STRING_LITERAL, "\"a great man\""),
+                new CommonToken(DEDENT, "")
+        ));
     }
 
     /**
@@ -81,92 +67,47 @@ public class SchemaLexerTest extends BasePlatformTestCase {
                 Person(人物): EntityType
                     properties:
                         birth(生日): Text
-
+                
                 Artist(艺术家) -> Person:
                     desc: "a great man"
                 """;
 
-        assertEquals(
-                "Lexer: Inherited entity",
-                prettier(List.of(
-                        // Person(人物): EntityType
-                        new SchemaToken(IDENTIFIER, "Person"), new SchemaToken(LPARENTH, "("),
-                        new SchemaToken(IDENTIFIER, "人物"),
-                        new SchemaToken(RPARENTH, ")"),
-                        new SchemaToken(COLON, ":"),
-                        new SchemaToken(ENTITY_TYPE_KEYWORD, "EntityType"),
-                        // \t properties:
-                        new SchemaToken(INDENT, "    "),
-                        new SchemaToken(PROPERTIES_KEYWORD, "properties"),
-                        new SchemaToken(COLON, ":"),
-                        // \t\t birth(生日): Text
-                        new SchemaToken(INDENT, "        "),
-                        new SchemaToken(IDENTIFIER, "birth"),
-                        new SchemaToken(LPARENTH, "("),
-                        new SchemaToken(IDENTIFIER, "生日"),
-                        new SchemaToken(RPARENTH, ")"),
-                        new SchemaToken(COLON, ":"),
-                        new SchemaToken(TEXT_KEYWORD, "Text"),
-                        new SchemaToken(DEDENT, ""),
-                        new SchemaToken(DEDENT, ""),
-                        // Artist(艺术家) -> Person:
-                        new SchemaToken(IDENTIFIER, "Artist"),
-                        new SchemaToken(LPARENTH, "("),
-                        new SchemaToken(IDENTIFIER, "艺术家"),
-                        new SchemaToken(RPARENTH, ")"),
-                        new SchemaToken(RIGHT_ARROW, "->"),
-                        new SchemaToken(IDENTIFIER, "Person"),
-                        new SchemaToken(COLON, ":"),
-                        // \t desc: "a great man"
-                        new SchemaToken(INDENT, "    "),
-                        new SchemaToken(DESC_KEYWORD, "desc"),
-                        new SchemaToken(COLON, ":"),
-                        new SchemaToken(STRING_LITERAL, "\"a great man\""),
-                        new SchemaToken(DEDENT, "")
-                )),
-                prettier(lexerTokens(text))
-        );
-    }
-
-    private static List<SchemaToken> lexerTokens(String text) {
-        List<SchemaToken> tokens = new ArrayList<>();
-
-        Lexer lexer = new SchemaLexerAdapter();
-        lexer.start(text);
-        while (lexer.getTokenType() != null) {
-            IElementType type = lexer.getTokenType();
-            if (type != TokenType.WHITE_SPACE && type != TokenType.NEW_LINE_INDENT) {
-                tokens.add(new SchemaToken(type, lexer.getTokenText()));
-            }
-            lexer.advance();
-        }
-
-        return tokens;
-    }
-
-    private String prettier(List<SchemaToken> tokens) {
-        return String.join("\n", tokens
-                .stream()
-                .map(Object::toString)
-                .toList()
-        );
-    }
-
-    public static class SchemaToken {
-        public IElementType type;
-        public String text;
-
-        public SchemaToken(IElementType type, String text) {
-            this.type = type;
-            this.text = text;
-        }
-
-        public String toString() {
-            Map<String, String> map = new LinkedHashMap<>();
-            map.put("type", this.type.toString());
-            map.put("text", this.text);
-            return JSON.toJSONString(map);
-        }
+        assertTokens(text, List.of(
+                // Person(人物): EntityType
+                new CommonToken(IDENTIFIER, "Person"), new CommonToken(LPARENTH, "("),
+                new CommonToken(IDENTIFIER, "人物"),
+                new CommonToken(RPARENTH, ")"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(ENTITY_TYPE_KEYWORD, "EntityType"),
+                // \t properties:
+                new CommonToken(INDENT, "    "),
+                new CommonToken(PROPERTIES_KEYWORD, "properties"),
+                new CommonToken(COLON, ":"),
+                // \t\t birth(生日): Text
+                new CommonToken(INDENT, "        "),
+                new CommonToken(IDENTIFIER, "birth"),
+                new CommonToken(LPARENTH, "("),
+                new CommonToken(IDENTIFIER, "生日"),
+                new CommonToken(RPARENTH, ")"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(TEXT_KEYWORD, "Text"),
+                new CommonToken(DEDENT, ""),
+                new CommonToken(DEDENT, ""),
+                // Artist(艺术家) -> Person:
+                new CommonToken(IDENTIFIER, "Artist"),
+                new CommonToken(LPARENTH, "("),
+                new CommonToken(IDENTIFIER, "艺术家"),
+                new CommonToken(RPARENTH, ")"),
+                new CommonToken(RIGHT_ARROW, "->"),
+                new CommonToken(IDENTIFIER, "Person"),
+                new CommonToken(COLON, ":"),
+                // \t desc: "a great man"
+                new CommonToken(INDENT, "    "),
+                new CommonToken(DESC_KEYWORD, "desc"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(STRING_LITERAL, "\"a great man\""),
+                new CommonToken(DEDENT, "")
+        ));
     }
 
 }
