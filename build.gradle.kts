@@ -24,7 +24,6 @@ dependencies {
         bundledPlugin("com.intellij.java")
         testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Java)
-        testFramework(TestFrameworkType.Plugin.JavaScript)
     }
 
     testImplementation("junit:junit:4.13.2")
