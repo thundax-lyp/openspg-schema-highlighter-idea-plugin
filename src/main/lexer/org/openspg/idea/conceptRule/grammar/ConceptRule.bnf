@@ -145,9 +145,9 @@ searchCondition ::= logicValueExpression
 //#############################################################################
 // the rule 定义部分
 //#############################################################################
-theRuleDeclaration ::= theRuleHead LBRACE theRuleBody RBRACE
+theRuleDeclaration ::= theRuleHead LBRACE theRuleBody? RBRACE
 theRuleHead ::= CONSTRAINT_KEYWORD | RULE_KEYWORD
-theRuleBody ::= theRuleExpression*
+theRuleBody ::= theRuleExpression+
 
 // rule expression
 theRuleExpression ::= projectRuleExpression | logicRuleExpression | expressionSet
@@ -269,9 +269,9 @@ graphAliasElementList ::= graphAliasWithProperty (COMMA graphAliasWithProperty)*
 //        }
 //    )
 //}
-theActionDeclaration ::= theActionHead LBRACE theActionBody RBRACE
+theActionDeclaration ::= theActionHead LBRACE theActionBody? RBRACE
 theActionHead ::= ACTION_KEYWORD
-theActionBody ::= theActionExpression*
+theActionBody ::= theActionExpression+
 theActionExpression ::= addNodeFunction | addEdgeFunction
 
 addNodeFunction ::= (identifier EQ)? ADD_NODE_KEYWORD LPARENTH typeFunctionParam COMMA objectFunctionParam RPARENTH
