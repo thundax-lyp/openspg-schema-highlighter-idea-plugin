@@ -23,8 +23,8 @@ public abstract class AbstractLexerTestCase extends BasePlatformTestCase {
         List<CommonToken> actualTokens = lexerTokens(input);
 
         assertEquals(
-                prettier(actualTokens),
-                prettier(expectedTokens)
+                prettier(expectedTokens),
+                prettier(actualTokens)
         );
     }
 
