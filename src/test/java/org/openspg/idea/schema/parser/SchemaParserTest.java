@@ -5,7 +5,7 @@ import com.intellij.testFramework.ParsingTestCase;
 public class SchemaParserTest extends ParsingTestCase {
 
     public SchemaParserTest() {
-        super("parser", "schema", new SchemaParserDefinition());
+        super("schema/parser", "schema", new SchemaParserDefinition());
     }
 
     /**
