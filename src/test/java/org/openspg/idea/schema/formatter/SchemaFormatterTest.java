@@ -1,18 +1,15 @@
 package org.openspg.idea.schema.formatter;
 
-import com.intellij.application.options.CodeStyle;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import com.intellij.openapi.command.WriteCommandAction;
+import org.openspg.idea.common.AbstractFormatterTestCase;
 import org.openspg.idea.schema.SchemaFileType;
 import org.openspg.idea.schema.SchemaLanguage;
 
-import java.util.List;
-import java.util.function.Consumer;
+public class SchemaFormatterTest extends AbstractFormatterTestCase {
 
-public class SchemaFormatterTest extends BasePlatformTestCase {
+    public SchemaFormatterTest() {
+        super(SchemaLanguage.INSTANCE, SchemaFileType.INSTANCE);
+    }
 
     /**
      * Scenario: namespace and entities with inconsistent spacing
@@ -35,7 +32,7 @@ public class SchemaFormatterTest extends BasePlatformTestCase {
                   desc:"ok"
                 """;
 
-        withSchemaSettings(settings -> {
+        withCommonSettings(settings -> {
             settings.SPACE_AFTER_COLON = false;
             settings.SPACE_AFTER_COMMA = true;
             settings.SPACE_BEFORE_COMMA = false;
@@ -73,7 +70,7 @@ public class SchemaFormatterTest extends BasePlatformTestCase {
                     desc: "x"
                 """;
 
-        withSchemaSettings(settings -> {
+        withCommonSettings(settings -> {
             settings.SPACE_AFTER_COLON = true;
             settings.SPACE_AFTER_COMMA = true;
             settings.SPACE_BEFORE_COMMA = false;
@@ -88,23 +85,4 @@ public class SchemaFormatterTest extends BasePlatformTestCase {
         }, () -> assertReformat(input, expected));
     }
 
-    private void assertReformat(String input, String expected) {
-        myFixture.configureByText(SchemaFileType.INSTANCE, input);
-        WriteCommandAction.runWriteCommandAction(getProject(), () -> {
-            CodeStyleManager manager = CodeStyleManager.getInstance(getProject());
-            manager.reformatText(
-                    myFixture.getFile(),
-                    List.of(myFixture.getFile().getTextRange())
-            );
-        });
-        myFixture.checkResult(expected);
-    }
-
-    private void withSchemaSettings(Consumer<CommonCodeStyleSettings> consumer, Runnable action) {
-        CodeStyleSettings baseSettings = CodeStyle.getSettings(getProject());
-        CodeStyle.doWithTemporarySettings(getProject(), baseSettings, (x) -> {
-            consumer.accept(x.getCommonSettings(SchemaLanguage.INSTANCE));
-            action.run();
-        });
-    }
 }
