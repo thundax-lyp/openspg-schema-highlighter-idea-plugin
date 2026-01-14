@@ -1,0 +1,10 @@
+namespace Sample
+
+`TaxEvent`/`Foo`:`TaxEvent`/`Bar`
+    rule: [[
+        Define (s:`TaxEvent`/`Foo`)-[p:leadTo|belongTo]->(o:`TaxEvent`/`Bar`) {
+            Structure {
+                (s)-[p:leadTo]->(o)
+            }
+        }
+    ]]

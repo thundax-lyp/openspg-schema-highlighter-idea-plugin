@@ -1,0 +1,6 @@
+OpenSPG Concept Rule File
+  ConceptRuleNamespaceDeclarationImpl(NAMESPACE_DECLARATION)
+    PsiElement(ConceptRuleTokenType.NAMESPACE_KEYWORD)('namespace')
+    PsiWhiteSpace(' ')
+    ConceptRuleNamespaceVariableImpl(NAMESPACE_VARIABLE)
+      PsiElement(ConceptRuleTokenType.UNESCAPED_SYMBOLIC_NAME)('Sample')
