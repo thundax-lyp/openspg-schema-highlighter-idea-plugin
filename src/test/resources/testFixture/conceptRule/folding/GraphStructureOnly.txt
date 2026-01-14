@@ -1,0 +1,5 @@
+<fold text='Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {...}'>Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {
+    <fold text='Structure {...}'>Structure {
+        s -> o
+    }</fold>
+}</fold>

@@ -1,0 +1,16 @@
+namespace Sample
+
+<fold text='`TaxEvent`/`Foo`: ...'>`TaxEvent`/`Foo`:
+    rule: [[
+        <fold text='Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {...}'>Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {
+            <fold text='Structure {...}'>Structure {
+                s -> o
+            }</fold>
+            <fold text='Rule {...}'>Rule {
+                R1: s == o
+            }</fold>
+            <fold text='Action {...}'>Action {
+                createNodeInstance(type=TaxEvent, value={})
+            }</fold>
+        }</fold>
+    ]]</fold>

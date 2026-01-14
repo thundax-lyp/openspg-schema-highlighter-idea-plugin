@@ -1,0 +1,16 @@
+namespace Sample
+
+`TaxEvent`/`Foo`:
+    rule: [[
+        Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {
+            Structure {
+                s -> o
+            }
+            Rule {
+                R1: s == o
+            }
+            Action {
+                createNodeInstance(type=TaxEvent, value={})
+            }
+        }
+    ]]

@@ -1,0 +1,2 @@
+<fold text='#...'>// comment one</fold>
+<fold text='#...'>/* comment two */</fold>

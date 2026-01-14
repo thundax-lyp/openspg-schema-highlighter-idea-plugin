@@ -1,0 +1,5 @@
+Define (s:`TaxEvent`/`Foo`)-[p:leadTo]->(o:`TaxEvent`/`Foo`) {
+    Structure {
+        s -> o
+    }
+}
