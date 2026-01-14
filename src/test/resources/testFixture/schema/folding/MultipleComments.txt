@@ -1,0 +1,5 @@
+namespace Sample
+<fold text='#...'># first</fold>
+<fold text='#...'># second</fold>
+<fold text='Person(人物): EntityType {...}'>Person(人物): EntityType
+    <fold text='desc: "x"'>desc: "x"</fold></fold>

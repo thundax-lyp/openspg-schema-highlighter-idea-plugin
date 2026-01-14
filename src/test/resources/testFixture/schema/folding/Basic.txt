@@ -1,0 +1,20 @@
+namespace Sample
+
+<fold text='#...'># comment</fold>
+<fold text='Person(人物): EntityType {...}'>Person(人物): EntityType
+    <fold text='properties: {...}'>properties:
+        <fold text='birth(出生): Date {...}'>birth(出生): Date
+            <fold text='desc: "x"'>desc: "x"</fold></fold></fold>
+    <fold text='desc: [[
+        Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`) {
+            Structure {
+                (s)
+            }
+        }
+    ]]'>desc: [[
+        <fold text='...'>Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`) {
+            Structure {
+                (s)
+            }
+        }</fold>
+    ]]</fold></fold>

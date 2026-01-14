@@ -1,0 +1,8 @@
+namespace Sample
+
+<fold text='Parent(父): EntityType {...}'>Parent(父): EntityType
+    <fold text='properties: {...}'>properties:
+        <fold text='Child(子): EntityType {...}'>Child(子): EntityType
+            <fold text='properties: {...}'>properties:
+                <fold text='GrandChild(孙): EntityType {...}'>GrandChild(孙): EntityType
+                    <fold text='desc: "x"'>desc: "x"</fold></fold></fold></fold></fold></fold>

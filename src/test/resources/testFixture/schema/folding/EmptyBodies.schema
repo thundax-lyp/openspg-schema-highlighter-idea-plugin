@@ -1,0 +1,5 @@
+namespace Sample
+
+Person(人物): EntityType
+    desc: "x"
+SingleLine(单行): EntityType

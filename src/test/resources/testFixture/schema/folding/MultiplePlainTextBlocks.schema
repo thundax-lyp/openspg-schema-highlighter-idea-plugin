@@ -1,0 +1,8 @@
+namespace Sample
+Person(人物): EntityType
+    desc: [[
+        plain text 1
+    ]]
+    rule: [[
+        plain text 2
+    ]]

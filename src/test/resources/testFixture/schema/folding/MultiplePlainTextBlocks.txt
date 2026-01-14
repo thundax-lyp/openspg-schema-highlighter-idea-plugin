@@ -1,0 +1,12 @@
+namespace Sample
+<fold text='Person(人物): EntityType {...}'>Person(人物): EntityType
+    <fold text='desc: [[
+        plain text 1
+    ]]'>desc: [[
+        <fold text='...'>plain text 1</fold>
+    ]]</fold>
+    <fold text='rule: [[
+        plain text 2
+    ]]'>rule: [[
+        <fold text='...'>plain text 2</fold>
+    ]]</fold></fold>

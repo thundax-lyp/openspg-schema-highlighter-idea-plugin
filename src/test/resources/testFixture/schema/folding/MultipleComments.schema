@@ -1,0 +1,5 @@
+namespace Sample
+# first
+# second
+Person(人物): EntityType
+    desc: "x"

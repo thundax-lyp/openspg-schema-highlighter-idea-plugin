@@ -1,21 +1,11 @@
 package org.openspg.idea.schema.folding;
 
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import org.openspg.idea.common.AbstractFoldingTestCase;
 
-public class SchemaFoldingTest extends BasePlatformTestCase {
-
-    protected final String myFileExt;
-    protected final String myFullDataPath;
-    protected final boolean myLowercaseFirstLetter;
+public class SchemaFoldingTest extends AbstractFoldingTestCase {
 
     public SchemaFoldingTest() {
-        this("folding", "schema", false);
-    }
-
-    protected SchemaFoldingTest(String dataPath, String fileExt, boolean lowercaseFirstLetter) {
-        myFullDataPath = getTestDataPath() + "/" + dataPath;
-        myFileExt = fileExt;
-        myLowercaseFirstLetter = lowercaseFirstLetter;
+        super("schema/folding", "schema", new SchemaFoldingBuilder());
     }
 
     /**
@@ -26,14 +16,35 @@ public class SchemaFoldingTest extends BasePlatformTestCase {
         doTest();
     }
 
-    protected void doTest() {
-        String name = getTestName(false);
-        myFixture.testFolding(myFullDataPath + "/" + name + "." + myFileExt);
+    /**
+     * Scenario: nested entities with multiple levels
+     * Focus: entity and property folding placeholders at each level
+     */
+    public void testNestedEntities() {
+        doTest();
     }
 
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testFixture";
+    /**
+     * Scenario: entity and property without bodies
+     * Focus: placeholders without "{...}" suffix
+     */
+    public void testEmptyBodies() {
+        doTest();
     }
 
+    /**
+     * Scenario: multiple comment lines
+     * Focus: each comment line can be folded
+     */
+    public void testMultipleComments() {
+        doTest();
+    }
+
+    /**
+     * Scenario: multiple plain text blocks
+     * Focus: plain text content folding within each block
+     */
+    public void testMultiplePlainTextBlocks() {
+        doTest();
+    }
 }

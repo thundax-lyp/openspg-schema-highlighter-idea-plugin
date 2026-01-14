@@ -1,0 +1,8 @@
+namespace Sample
+
+Parent(父): EntityType
+    properties:
+        Child(子): EntityType
+            properties:
+                GrandChild(孙): EntityType
+                    desc: "x"
