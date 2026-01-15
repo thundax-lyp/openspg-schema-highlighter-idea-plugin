@@ -55,24 +55,24 @@
         <module name="EmptyBlock"/>
         <!-- 控制流：switch 的 case 必须显式标注 fall-through -->
         <module name="FallThrough"/>
-        <!--        &lt;!&ndash; 控制流：switch 必须提供 default 分支 &ndash;&gt;-->
-        <!--        <module name="MissingSwitchDefault"/>-->
-        <!--        &lt;!&ndash; 控制流：default 必须放在最后 &ndash;&gt;-->
-        <!--        <module name="DefaultComesLast"/>-->
-        <!--        &lt;!&ndash; 表达式：禁止使用 == 比较字符串 &ndash;&gt;-->
-        <!--        <module name="StringLiteralEquality"/>-->
-        <!--        &lt;!&ndash; 表达式：简化布尔表达式 &ndash;&gt;-->
-        <!--        <module name="SimplifyBooleanExpression"/>-->
-        <!--        &lt;!&ndash; 表达式：简化布尔返回 &ndash;&gt;-->
-        <!--        <module name="SimplifyBooleanReturn"/>-->
-        <!--        &lt;!&ndash; 类型：统一数组声明风格 &ndash;&gt;-->
-        <!--        <module name="ArrayTypeStyle"/>-->
-        <!--        &lt;!&ndash; 字面量：长整型后缀必须为大写 L &ndash;&gt;-->
-        <!--        <module name="UpperEll"/>-->
-        <!--        &lt;!&ndash; 防御性：禁止在表达式中进行赋值 &ndash;&gt;-->
-        <!--        <module name="InnerAssignment"/>-->
-        <!--        &lt;!&ndash; 防御性：重写 equals 时必须重写 hashCode &ndash;&gt;-->
-        <!--        <module name="EqualsHashCode"/>-->
+        <!-- 控制流：switch 必须提供 default 分支 -->
+        <module name="MissingSwitchDefault"/>
+        <!-- 控制流：default 必须放在最后 -->
+        <module name="DefaultComesLast"/>
+        <!-- 表达式：禁止使用 == 比较字符串 -->
+        <module name="StringLiteralEquality"/>
+        <!-- 表达式：简化布尔表达式 -->
+        <module name="SimplifyBooleanExpression"/>
+        <!-- 表达式：简化布尔返回 -->
+        <module name="SimplifyBooleanReturn"/>
+        <!-- 类型：统一数组声明风格 -->
+        <module name="ArrayTypeStyle"/>
+        <!-- 字面量：长整型后缀必须为大写 L -->
+        <module name="UpperEll"/>
+        <!-- 防御性：禁止在表达式中进行赋值 -->
+        <module name="InnerAssignment"/>
+        <!-- 防御性：重写 equals 时必须重写 hashCode -->
+        <module name="EqualsHashCode"/>
         <!--        &lt;!&ndash; 防御性：不可继承的类需标记为 final &ndash;&gt;-->
         <!--        <module name="FinalClass"/>-->
         <!--        &lt;!&ndash; 防御性：工具类必须隐藏构造方法 &ndash;&gt;-->
