@@ -36,6 +36,7 @@ checkstyle {
     configFile = file("config/checkstyle/checkstyle.xml")
     isIgnoreFailures = false
     maxWarnings = 0
+    isShowViolations = true
 }
 
 sourceSets {

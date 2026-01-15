@@ -73,9 +73,9 @@
         <module name="InnerAssignment"/>
         <!-- 防御性：重写 equals 时必须重写 hashCode -->
         <module name="EqualsHashCode"/>
-        <!--        &lt;!&ndash; 防御性：不可继承的类需标记为 final &ndash;&gt;-->
-        <!--        <module name="FinalClass"/>-->
-        <!--        &lt;!&ndash; 防御性：工具类必须隐藏构造方法 &ndash;&gt;-->
-        <!--        <module name="HideUtilityClassConstructor"/>-->
+        <!-- 防御性：不可继承的类需标记为 final -->
+        <module name="FinalClass"/>
+        <!-- 防御性：工具类必须隐藏构造方法 -->
+        <!-- <module name="HideUtilityClassConstructor"/> -->
     </module>
 </module>
