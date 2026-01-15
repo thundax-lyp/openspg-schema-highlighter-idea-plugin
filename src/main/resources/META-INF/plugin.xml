@@ -16,6 +16,7 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>version 0.0.18</b> support IDEA 253+ </li>
             <li><b>version 0.0.17</b> SchemaML: optimize preview</li>
             <li><b>version 0.0.16</b> RuleML: bug fixed</li>
             <li><b>version 0.0.15</b> SchemaML: optimize preview</li>
