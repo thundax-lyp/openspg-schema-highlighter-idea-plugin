@@ -8,7 +8,7 @@ import org.jetbrains.annotations.PropertyKey;
 
 import java.util.function.Supplier;
 
-public class ConceptRuleBundle {
+public final class ConceptRuleBundle {
 
     private static final @NonNls String BUNDLE = "messages.ConceptRuleBundle";
     private static final DynamicBundle INSTANCE = new DynamicBundle(ConceptRuleBundle.class, BUNDLE);

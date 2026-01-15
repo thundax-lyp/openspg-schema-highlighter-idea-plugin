@@ -8,7 +8,7 @@ import org.jetbrains.annotations.PropertyKey;
 
 import java.util.function.Supplier;
 
-public class SchemaBundle {
+public final class SchemaBundle {
 
     private static final @NonNls String BUNDLE = "messages.SchemaBundle";
     private static final DynamicBundle INSTANCE = new DynamicBundle(SchemaBundle.class, BUNDLE);
