@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="error"/>
+
+    <!-- 文件级空白检查：禁用 Tab 缩进（要求空格缩进） -->
+    <module name="FileTabCharacter"/>
+    <!-- 文件级空白检查：文件末尾必须有换行 -->
+    <module name="NewlineAtEndOfFile"/>
+    <!-- 行尾空白检查在 TreeWalker 中处理，以便忽略字符串/文本块内部 -->
+    <!-- 行长度限制：忽略 package/import 行的长度 -->
+    <module name="LineLength">
+        <!-- 允许的最大行长 -->
+        <property name="max" value="230"/>
+        <!-- 需要忽略的行模式 -->
+        <property name="ignorePattern" value="^package|^import"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- 文件/类结构：外部类名需与文件名一致 -->
+        <module name="OuterTypeFilename"/>
+        <!-- 文件/类结构：一个文件只允许一个顶级类 -->
+        <module name="OneTopLevelClass"/>
+        <!-- 导入规范：禁止使用 * 导入 -->
+<!--        <module name="AvoidStarImport"/>-->
+        <!-- 导入规范：禁止未使用的 import -->
+        <module name="UnusedImports"/>
+        <!-- 导入规范：禁止冗余 import -->
+        <module name="RedundantImport"/>
+        <!-- 修饰符顺序：强制 public/protected/private/static/final 等顺序 -->
+        <module name="ModifierOrder"/>
+        <!-- 语句规范：禁止空语句（孤立分号） -->
+        <module name="EmptyStatement"/>
+        <!-- 语句规范：一行只声明一个变量 -->
+        <module name="MultipleVariableDeclarations"/>
+        <!-- 语句规范：一行只包含一条语句 -->
+        <module name="OneStatementPerLine"/>
+        <!-- 语句规范：控制语句必须使用大括号 -->
+        <module name="NeedBraces"/>
+<!--        &lt;!&ndash; 空白规范：禁止行尾空白（忽略字符串/文本块内部的空白） &ndash;&gt;-->
+<!--        <module name="RegexpSinglelineJava">-->
+<!--            <property name="format" value="\\s+$"/>-->
+<!--            <property name="message" value="Trailing whitespace"/>-->
+<!--            <property name="ignoreStrings" value="true"/>-->
+<!--        </module>-->
+<!--        &lt;!&ndash; 空白规范：关键字/符号后必须有空格 &ndash;&gt;-->
+<!--        <module name="WhitespaceAfter"/>-->
+<!--        &lt;!&ndash; 空白规范：运算符与分隔符周围空格规则 &ndash;&gt;-->
+<!--        <module name="WhitespaceAround"/>-->
+<!--        &lt;!&ndash; 大括号规范：左大括号位置 &ndash;&gt;-->
+<!--        <module name="LeftCurly"/>-->
+<!--        &lt;!&ndash; 大括号规范：右大括号位置 &ndash;&gt;-->
+<!--        <module name="RightCurly"/>-->
+<!--        &lt;!&ndash; 控制流：禁止空代码块（如空 catch/if/else） &ndash;&gt;-->
+<!--        <module name="EmptyBlock"/>-->
+<!--        &lt;!&ndash; 控制流：switch 的 case 必须显式标注 fall-through &ndash;&gt;-->
+<!--        <module name="FallThrough"/>-->
+<!--        &lt;!&ndash; 控制流：switch 必须提供 default 分支 &ndash;&gt;-->
+<!--        <module name="MissingSwitchDefault"/>-->
+<!--        &lt;!&ndash; 控制流：default 必须放在最后 &ndash;&gt;-->
+<!--        <module name="DefaultComesLast"/>-->
+<!--        &lt;!&ndash; 表达式：禁止使用 == 比较字符串 &ndash;&gt;-->
+<!--        <module name="StringLiteralEquality"/>-->
+<!--        &lt;!&ndash; 表达式：简化布尔表达式 &ndash;&gt;-->
+<!--        <module name="SimplifyBooleanExpression"/>-->
+<!--        &lt;!&ndash; 表达式：简化布尔返回 &ndash;&gt;-->
+<!--        <module name="SimplifyBooleanReturn"/>-->
+<!--        &lt;!&ndash; 类型：统一数组声明风格 &ndash;&gt;-->
+<!--        <module name="ArrayTypeStyle"/>-->
+<!--        &lt;!&ndash; 字面量：长整型后缀必须为大写 L &ndash;&gt;-->
+<!--        <module name="UpperEll"/>-->
+<!--        &lt;!&ndash; 防御性：禁止在表达式中进行赋值 &ndash;&gt;-->
+<!--        <module name="InnerAssignment"/>-->
+<!--        &lt;!&ndash; 防御性：重写 equals 时必须重写 hashCode &ndash;&gt;-->
+<!--        <module name="EqualsHashCode"/>-->
+<!--        &lt;!&ndash; 防御性：不可继承的类需标记为 final &ndash;&gt;-->
+<!--        <module name="FinalClass"/>-->
+<!--        &lt;!&ndash; 防御性：工具类必须隐藏构造方法 &ndash;&gt;-->
+<!--        <module name="HideUtilityClassConstructor"/>-->
+    </module>
+</module>

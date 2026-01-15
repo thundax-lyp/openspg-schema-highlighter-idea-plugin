@@ -4,6 +4,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
     id("org.jetbrains.intellij.platform") version "2.10.0"
+    id("checkstyle")
 }
 
 group = "org.openspg.idea"
@@ -30,6 +31,13 @@ dependencies {
     testImplementation("org.opentest4j:opentest4j:1.3.0")
 }
 
+checkstyle {
+    toolVersion = "10.17.0"
+    configFile = file("config/checkstyle/checkstyle.xml")
+    isIgnoreFailures = false
+    maxWarnings = 0
+}
+
 sourceSets {
     main {
         java {
@@ -42,7 +50,6 @@ intellijPlatform {
     pluginConfiguration {
         ideaVersion {
             sinceBuild.set("242")
-//            untilBuild.set("252.*")
         }
     }
 
@@ -72,5 +79,23 @@ tasks {
             events("passed", "skipped", "failed")
             showStandardStreams = true
         }
+    }
+
+    withType<Checkstyle> {
+        reports {
+            xml.required.set(false)
+            html.required.set(true)
+        }
+        exclude("**/gen/**")
+    }
+
+    named<Checkstyle>("checkstyleMain") {
+        source = fileTree("src/main/java")
+        include("**/*.java")
+    }
+
+    named<Checkstyle>("checkstyleTest") {
+        source = fileTree("src/test/java")
+        include("**/*.java")
     }
 }
