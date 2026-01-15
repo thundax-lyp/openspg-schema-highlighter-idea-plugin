@@ -8,4 +8,4 @@
 /src/main/resources/static/assets/
 /src/main/gen/
 /src/test/resources/kag-examples/
-.DS_Store
+/**/.DS_Store
