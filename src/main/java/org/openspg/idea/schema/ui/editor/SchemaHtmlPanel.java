@@ -48,7 +48,7 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
     }
 
     private void initialize() {
-        getJBCefClient().addRequestHandler(requestHandler = new CefRequestHandlerAdapter() {
+        this.requestHandler = new CefRequestHandlerAdapter() {
             @Override
             public CefResourceRequestHandler getResourceRequestHandler(CefBrowser browser, CefFrame frame, CefRequest request, boolean isNavigation, boolean isDownload, String requestInitiator, BoolRef disableDefaultHandling) {
                 return new SchemaResourceRequestHandler(
@@ -57,22 +57,25 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
                         new FocusEntityApiSupplier(SchemaHtmlPanel.this::handleEntityActivated)
                 );
             }
-        }, getCefBrowser());
+        };
+        getJBCefClient().addRequestHandler(this.requestHandler, getCefBrowser());
 
-        getJBCefClient().addLifeSpanHandler(lifeSpanHandler = new CefLifeSpanHandlerAdapter() {
+        this.lifeSpanHandler = new CefLifeSpanHandlerAdapter() {
             @Override
             public boolean onBeforePopup(CefBrowser browser, CefFrame frame, String target_url, String target_frame_name) {
                 return true;
             }
-        }, getCefBrowser());
+        };
+        getJBCefClient().addLifeSpanHandler(this.lifeSpanHandler, getCefBrowser());
 
-        getJBCefClient().addDisplayHandler(displayHandler = new CefDisplayHandlerAdapter() {
+        this.displayHandler = new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
                 logger.warn("Console: " + message);
                 return true;
             }
-        }, getCefBrowser());
+        };
+        getJBCefClient().addDisplayHandler(this.displayHandler, getCefBrowser());
 
         this.loadURL(HOME_URL.toString());
 
