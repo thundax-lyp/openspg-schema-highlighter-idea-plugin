@@ -3,6 +3,7 @@ package org.openspg.idea.conceptRule.codeStyle;
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.TabbedLanguageCodeStylePanel;
+import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CodeStyleConfigurable;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsProvider;
@@ -19,13 +20,18 @@ public final class ConceptRuleCodeStyleSettingsProvider extends CodeStyleSetting
     }
 
     @Override
+    public Language getLanguage() {
+        return ConceptRuleLanguage.INSTANCE;
+    }
+
+    @Override
     public String getConfigurableDisplayName() {
         return "OpenSPG Concept Rule";
     }
 
-    @NotNull
-    public CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings settings,
-                                                    @NotNull CodeStyleSettings modelSettings) {
+    @Override
+    public @NotNull CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings settings,
+                                                             @NotNull CodeStyleSettings modelSettings) {
         return new CodeStyleAbstractConfigurable(settings, modelSettings, this.getConfigurableDisplayName()) {
             @Override
             protected @NotNull CodeStyleAbstractPanel createPanel(@NotNull CodeStyleSettings settings) {

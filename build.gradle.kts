@@ -3,7 +3,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.intellij.platform") version "2.10.0"
+    id("org.jetbrains.intellij.platform") version "2.10.5"
     id("checkstyle")
 }
 
