@@ -55,7 +55,7 @@ Verify plugin compatibility:
 ./gradlew verifyPlugin
 ```
 
-## Project 
+## Project Structure
 ```
 .
 ├── AGENTS.md         # CodeX ANGETS
