@@ -1,5 +1,6 @@
 package org.openspg.idea.schema.ui.editor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.jcef.JCEFHtmlPanel;
 import com.intellij.util.Url;
@@ -20,7 +21,9 @@ import org.openspg.idea.schema.ui.editor.server.PreviewStaticServer;
 import org.openspg.idea.schema.ui.editor.server.ResourcesController;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class SchemaHtmlPanel extends JCEFHtmlPanel {
@@ -95,13 +98,13 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
         System.out.println(dataString);
         this.resourceBytes = dataString.getBytes(StandardCharsets.UTF_8);
 
-        String script = "window.postMessage({type:\"schema-diagram.refresh\"});";
-        getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
+        this.postMessage("refresh-schema");
     }
 
     public void activateEntity(String name) {
-        String script = "window.postMessage({type:\"schema-diagram.activate-entity\", payload: {name:\"" + name + "\"}});";
-        getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
+        Map<String, Object> args = new HashMap<>();
+        args.put("name", name);
+        this.postMessage("activate-entity", args);
     }
 
     private Boolean handleEntityActivated(List<SchemaEntity> entities) {
@@ -112,7 +115,25 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
     }
 
     public void updateStyle() {
-        String script = "window.postMessage({type:\"schema-diagram.refresh-theme\"});";
+        this.postMessage("refresh-theme");
+    }
+
+    private void postMessage(String type) {
+        this.postMessage(type, null);
+    }
+
+    private void postMessage(String type, Map<String, Object> args) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", type);
+        if (args != null) {
+            payload.put("args", args);
+        }
+
+        Map<String, Object> wrapper = new HashMap<>();
+        wrapper.put("action", "openspg.command");
+        wrapper.put("payload", payload);
+
+        String script = "window.postMessage(" + JSONObject.toJSONString(wrapper) + ");";
         getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
     }
 }
