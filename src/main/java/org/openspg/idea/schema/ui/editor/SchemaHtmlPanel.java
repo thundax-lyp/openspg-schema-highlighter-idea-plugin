@@ -20,7 +20,6 @@ import org.openspg.idea.schema.ui.editor.server.PreviewStaticServer;
 import org.openspg.idea.schema.ui.editor.server.ResourcesController;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,14 +95,12 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
         System.out.println(dataString);
         this.resourceBytes = dataString.getBytes(StandardCharsets.UTF_8);
 
-        String script = "document.getElementById('schema-diagram-refresh-button').click();";
+        String script = "window.postMessage({type:\"schema-diagram.refresh\"});";
         getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
     }
 
     public void activateEntity(String name) {
-        String base64Name = Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8));
-        String script = "window.activeEntityName='" + base64Name + "';\n"
-                + "document.getElementById('schema-diagram-active-entity-button').click();";
+        String script = "window.postMessage({type:\"schema-diagram.activate-entity\", payload: {name:\"" + name + "\"}});";
         getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
     }
 
@@ -115,7 +112,7 @@ public class SchemaHtmlPanel extends JCEFHtmlPanel {
     }
 
     public void updateStyle() {
-        String script = "document.getElementById('schema-diagram-refresh-css-button').click();";
+        String script = "window.postMessage({type:\"schema-diagram.refresh-theme\"});";
         getCefBrowser().executeJavaScript(script, getCefBrowser().getURL(), 0);
     }
 }
