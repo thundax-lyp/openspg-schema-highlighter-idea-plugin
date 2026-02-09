@@ -56,23 +56,23 @@ public class SchemaBlock extends AbstractBlock implements SettingsAwareBlock {
         myIndent = indent;
 
         if (INJECTED_ELEMENT_TYPES.contains(node.getElementType())) {
-            this.myInjection = true;
-            this.setBuildIndentsOnly(false);
+            myInjection = true;
+            setBuildIndentsOnly(false);
         } else {
-            this.myInjection = false;
-            this.setBuildIndentsOnly(true);
+            myInjection = false;
+            setBuildIndentsOnly(true);
         }
     }
 
     @Override
     protected List<Block> buildChildren() {
-        if (this.myInjection) {
+        if (myInjection) {
             return new ArrayList<>();
         }
 
         Stream<ASTNode> children;
         if (myNode.getElementType() == BASIC_PROPERTY_DECLARATION) {
-            children = this.extractNodes(
+            children = extractNodes(
                     Stream.of(myNode.getChildren(null)).toList(),
                     x -> x.getElementType() != PLAIN_TEXT_CONTENT
             ).stream();

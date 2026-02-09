@@ -20,7 +20,7 @@ abstract class AbstractSchemaStructureViewElement<T extends PsiElement> implemen
     protected final T myElement;
 
     public AbstractSchemaStructureViewElement(T element) {
-        this.myElement = element;
+        myElement = element;
     }
 
     @Override

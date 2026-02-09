@@ -56,7 +56,6 @@ public class SchemaFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        System.out.println("getNodeText: " + element + " " + useFullName);
         if (element instanceof SchemaStructureNameDeclaration) {
             PsiElement declaration = PsiTreeUtil.findFirstParent(element, x -> x instanceof SchemaBasicStructureDeclaration);
             if (declaration != null) {

@@ -24,13 +24,13 @@ public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenc
 
     public SchemaVariableStructureTypeReference(@NotNull SchemaVariableStructureType element) {
         super(element, new TextRange(0, element.getTextLength()));
-        this.myEntityName = element.getStructureName().getFullName();
+        myEntityName = element.getStructureName().getFullName();
     }
 
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
         return streamOfStructureNameDeclaration()
-                .filter(x -> x.getStructureName().getFullName().equals(this.myEntityName))
+                .filter(x -> x.getStructureName().getFullName().equals(myEntityName))
                 .map(PsiElementResolveResult::new)
                 .toArray(ResolveResult[]::new);
     }
