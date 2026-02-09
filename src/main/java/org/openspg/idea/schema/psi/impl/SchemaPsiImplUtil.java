@@ -3,6 +3,7 @@ package org.openspg.idea.schema.psi.impl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.schema.psi.*;
 import org.openspg.idea.schema.reference.SchemaVariableStructureTypeReference;
 
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SchemaPsiImplUtil {
 
@@ -70,6 +73,32 @@ public class SchemaPsiImplUtil {
     }
 
     // ============================================
+    // SchemaStructureNameDeclaration methods
+    //
+    public static String getName(SchemaStructureNameDeclaration element) {
+        return element.getStructureName().getFullName();
+    }
+
+    public static PsiElement setName(SchemaStructureNameDeclaration element, String newName) {
+        throw new IllegalArgumentException("unsupported operation. setName(SchemaStructureNameDeclaration element, String newName)");
+    }
+
+    public static PsiElement getNameIdentifier(SchemaStructureNameDeclaration element) {
+        return element;
+    }
+
+    // ============================================
+    // SchemaStructureName methods
+    //
+    @NotNull
+    public static String getFullName(SchemaStructureName element) {
+        return Stream.of(element.getChildren())
+                .filter(x -> x instanceof SchemaStructureSemanticName || x instanceof SchemaStructureRealName)
+                .map(PsiElement::getText)
+                .collect(Collectors.joining("#"));
+    }
+
+    // ============================================
     // SchemaVariableStructureType methods
     //
     public static PsiReference getReference(SchemaVariableStructureType element) {
@@ -104,7 +133,10 @@ public class SchemaPsiImplUtil {
     // SchemaEntity methods
     //
     public static String getName(SchemaEntity element) {
-        return element.getEntityHead().getName();
+        return element
+                .getEntityHead()
+                .getBasicStructureDeclaration()
+                .getName();
     }
 
     public static String getAliasName(SchemaEntity element) {
@@ -149,21 +181,6 @@ public class SchemaPsiImplUtil {
             );
         }
         return result;
-    }
-
-    // ============================================
-    // SchemaEntityHead methods
-    //
-    public static String getName(SchemaEntityHead element) {
-        return element.getBasicStructureDeclaration().getStructureNameDeclaration().getText();
-    }
-
-    public static PsiElement setName(SchemaEntityHead element, String newName) {
-        throw new IllegalArgumentException("unsupported operation. setName(SchemaEntityHead element, String newName)");
-    }
-
-    public static PsiElement getNameIdentifier(SchemaEntityHead element) {
-        return element.getBasicStructureDeclaration().getStructureNameDeclaration();
     }
 
     // ============================================

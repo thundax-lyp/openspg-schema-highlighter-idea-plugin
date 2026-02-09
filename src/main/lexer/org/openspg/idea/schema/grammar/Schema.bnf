@@ -37,8 +37,14 @@ basic_structure_declaration ::= structure_name_declaration LPARENTH structure_al
     methods=[getName toJson]
 }
 
-structure_name_declaration ::= structure_name
-structure_name ::= (structure_semantic_name HASH)* structure_real_name
+structure_name_declaration ::= structure_name {
+    mixin="org.openspg.idea.schema.psi.impl.SchemaNamedElementImpl"
+    implements="org.openspg.idea.schema.psi.SchemaNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
+structure_name ::= (structure_semantic_name HASH)* structure_real_name {
+    methods=[getFullName]
+}
 structure_semantic_name ::= IDENTIFIER
 structure_real_name ::= IDENTIFIER
 
@@ -105,11 +111,7 @@ root_entity ::= entity
 entity ::= entity_head entity_body? {
     methods=[getName getAliasName getTypes getProperties getLevel isBodyEmpty toJson]
 }
-entity_head ::= basic_structure_declaration {
-    mixin="org.openspg.idea.schema.psi.impl.SchemaNamedElementImpl"
-    implements="org.openspg.idea.schema.psi.SchemaNamedElement"
-    methods=[getName setName getNameIdentifier]
-}
+entity_head ::= basic_structure_declaration
 entity_body ::= INDENT property+ DEDENT
 
 /**
