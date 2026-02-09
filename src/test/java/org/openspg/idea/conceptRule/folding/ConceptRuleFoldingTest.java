@@ -1,7 +1,6 @@
 package org.openspg.idea.conceptRule.folding;
 
 import org.openspg.idea.common.AbstractFoldingTestCase;
-import org.openspg.idea.conceptRule.ConceptRuleFoldingBuilder;
 
 public class ConceptRuleFoldingTest extends AbstractFoldingTestCase {
 
