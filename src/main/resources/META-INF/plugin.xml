@@ -166,13 +166,13 @@
                 language="OpenSPG Schema"
                 implementationClass="org.openspg.idea.schema.completion.SchemaCompletionContributor"/>
 
-        <!--        <psi.referenceContributor-->
-        <!--                language="OpenSPG Schema"-->
-        <!--                implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>-->
+        <psi.referenceContributor
+                language="OpenSPG Schema"
+                implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>
 
-        <!--        <lang.findUsagesProvider-->
-        <!--                language="OpenSPG Schema"-->
-        <!--                implementationClass="org.openspg.idea.schema.SchemaFindUsagesProvider"/>-->
+        <lang.findUsagesProvider
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.reference.SchemaFindUsagesProvider"/>
 
     </extensions>
 
