@@ -31,14 +31,13 @@ final class SchemaCompletionContributor extends CompletionContributor {
                         SchemaEntityHead currentHead = (SchemaEntityHead) PsiTreeUtil.findFirstParent(parameters.getPosition(), SchemaEntityHead.class::isInstance);
                         if (currentHead != null
                                 && currentHead.getBasicStructureDeclaration().getStructureTypeDeclaration().getInheritedStructureTypeDeclaration() != null) {
-                            String currentName = currentHead.getName();
+                            String currentName = currentHead.getBasicStructureDeclaration().getName();
                             PsiTreeUtil.findChildrenOfType(parameters.getOriginalFile(), SchemaEntity.class).forEach(entity -> {
                                 if (!entity.getName().equals(currentName)) {
                                     resultSet.addElement(LookupElementBuilder.create(entity.getName()));
                                 }
                             });
                         }
-
                     }
                 }
         );
