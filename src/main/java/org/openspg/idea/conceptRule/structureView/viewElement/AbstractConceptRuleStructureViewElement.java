@@ -14,7 +14,7 @@ abstract class AbstractConceptRuleStructureViewElement<T extends PsiElement> imp
     protected final T myElement;
 
     public AbstractConceptRuleStructureViewElement(T element) {
-        this.myElement = element;
+        myElement = element;
     }
 
     @Override

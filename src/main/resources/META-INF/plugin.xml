@@ -111,6 +111,17 @@
 
         <languageInjector implementation="org.openspg.idea.schema.psi.SchemaLanguageInjector"/>
         <multiHostInjector implementation="org.openspg.idea.schema.injection.SchemaMultiHostInjector"/>
+
+        <completion.contributor
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.completion.SchemaCompletionContributor"/>
+
+        <psi.referenceContributor
+                language="OpenSPG Schema"
+                implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>
+        <lang.findUsagesProvider
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.reference.SchemaFindUsagesProvider"/>
         <!-- SchemaML: end -->
 
         <!-- ConceptRuleML: begin -->
@@ -158,21 +169,16 @@
 
         <lang.foldingBuilder
                 language="OpenSPG Concept Rule"
-                implementationClass="org.openspg.idea.conceptRule.ConceptRuleFoldingBuilder"/>
-        <!-- ConceptRuleML: end -->
-
-
-        <completion.contributor
-                language="OpenSPG Schema"
-                implementationClass="org.openspg.idea.schema.completion.SchemaCompletionContributor"/>
+                implementationClass="org.openspg.idea.conceptRule.folding.ConceptRuleFoldingBuilder"/>
 
         <psi.referenceContributor
-                language="OpenSPG Schema"
-                implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>
+                language="OpenSPG Concept Rule"
+                implementation="org.openspg.idea.conceptRule.reference.ConceptRuleReferenceContributor"/>
 
         <lang.findUsagesProvider
-                language="OpenSPG Schema"
-                implementationClass="org.openspg.idea.schema.reference.SchemaFindUsagesProvider"/>
+                language="OpenSPG Concept Rule"
+                implementationClass="org.openspg.idea.conceptRule.reference.ConceptRuleFindUsagesProvider"/>
+        <!-- ConceptRuleML: end -->
 
     </extensions>
 

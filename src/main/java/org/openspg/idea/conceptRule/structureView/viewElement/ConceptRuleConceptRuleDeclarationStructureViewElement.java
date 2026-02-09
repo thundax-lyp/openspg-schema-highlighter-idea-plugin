@@ -2,7 +2,9 @@ package org.openspg.idea.conceptRule.structureView.viewElement;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
-import org.openspg.idea.conceptRule.psi.*;
+import org.jetbrains.annotations.NotNull;
+import org.openspg.idea.conceptRule.psi.ConceptRuleConceptRuleDeclaration;
+import org.openspg.idea.conceptRule.psi.ConceptRuleConceptRuleItem;
 import org.openspg.idea.schema.SchemaIcons;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class ConceptRuleConceptRuleDeclarationStructureViewElement extends Abstr
     }
 
     @Override
-    public TreeElement[] getChildren() {
+    public TreeElement @NotNull [] getChildren() {
         List<TreeElement> treeElements = new ArrayList<>();
 
         for (ConceptRuleConceptRuleItem item : myElement.getConceptRuleBody().getConceptRuleItemList()) {

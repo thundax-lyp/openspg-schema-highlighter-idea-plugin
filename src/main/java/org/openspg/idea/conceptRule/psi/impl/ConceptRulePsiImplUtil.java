@@ -1,7 +1,9 @@
 package org.openspg.idea.conceptRule.psi.impl;
 
+import com.intellij.psi.PsiReference;
 import org.apache.commons.lang3.StringUtils;
 import org.openspg.idea.conceptRule.psi.*;
+import org.openspg.idea.conceptRule.reference.ConceptRuleConceptTypeReference;
 
 import java.util.List;
 
@@ -30,6 +32,20 @@ public class ConceptRulePsiImplUtil {
             return StringUtils.EMPTY;
         }
         return element.getConceptRuleHead().getFullEdgePointingRight().getText().trim() + nodePatterns.get(1).getText().trim();
+    }
+
+    // ============================================
+    // ConceptRuleConceptType methods
+    public static String getMajorLabel(ConceptRuleConceptType element) {
+        List<ConceptRuleIdentifier> identifiers = element.getIdentifierList();
+        if (identifiers.isEmpty()) {
+            return StringUtils.EMPTY;
+        }
+        return identifiers.get(0).getLabel();
+    }
+
+    public static PsiReference getReference(ConceptRuleConceptType element) {
+        return new ConceptRuleConceptTypeReference(element);
     }
 
     // ============================================
