@@ -40,6 +40,14 @@ public class SchemaPsiImplUtil {
         return element.getStructureNameDeclaration().getText();
     }
 
+    public static String getRealName(SchemaBasicStructureDeclaration element) {
+        return element
+                .getStructureNameDeclaration()
+                .getStructureName()
+                .getStructureRealName()
+                .getText();
+    }
+
     public static Map<String, Object> toJson(SchemaBasicStructureDeclaration element) {
         Map<String, Object> result = new LinkedHashMap<>();
 
@@ -137,6 +145,13 @@ public class SchemaPsiImplUtil {
                 .getEntityHead()
                 .getBasicStructureDeclaration()
                 .getName();
+    }
+
+    public static String getRealName(SchemaEntity element) {
+        return element
+                .getEntityHead()
+                .getBasicStructureDeclaration()
+                .getRealName();
     }
 
     public static String getAliasName(SchemaEntity element) {
