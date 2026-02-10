@@ -6,9 +6,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.openspg.idea.conceptRule.psi.ConceptRuleConceptType;
 import org.openspg.idea.schema.psi.SchemaBasicStructureDeclaration;
 import org.openspg.idea.schema.psi.SchemaStructureNameDeclaration;
+import org.openspg.idea.schema.psi.SchemaStructureRealName;
 
 public class ConceptRuleFindUsagesProvider implements FindUsagesProvider {
 
@@ -18,13 +18,14 @@ public class ConceptRuleFindUsagesProvider implements FindUsagesProvider {
     }
 
     @Override
-    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-        return psiElement instanceof ConceptRuleConceptType;
+    public boolean canFindUsagesFor(@NotNull PsiElement element) {
+        return element instanceof SchemaStructureNameDeclaration
+                || element instanceof SchemaStructureRealName;
     }
 
     @Nullable
     @Override
-    public String getHelpId(@NotNull PsiElement psiElement) {
+    public String getHelpId(@NotNull PsiElement element) {
         return null;
     }
 
@@ -43,11 +44,10 @@ public class ConceptRuleFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        System.out.println("getNodeText: " + element + " " + useFullName);
         if (element instanceof SchemaStructureNameDeclaration) {
             PsiElement declaration = PsiTreeUtil.findFirstParent(element, x -> x instanceof SchemaBasicStructureDeclaration);
             if (declaration != null) {
-                return declaration.getText();
+                return "***" + declaration.getText() + "***";
             }
         }
         return "";
