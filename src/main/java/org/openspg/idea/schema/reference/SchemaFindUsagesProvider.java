@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.openspg.idea.schema.psi.*;
 
-import java.util.List;
-
 public class SchemaFindUsagesProvider implements FindUsagesProvider {
 
     @Override
@@ -18,37 +16,29 @@ public class SchemaFindUsagesProvider implements FindUsagesProvider {
     }
 
     @Override
-    public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-        if (psiElement instanceof SchemaStructureNameDeclaration) {
-            List<SchemaEntity> entities = PsiTreeUtil.collectParents(psiElement, SchemaEntity.class, false, x -> false);
-            return entities.size() == 1;
-        }
-        return false;
+    public boolean canFindUsagesFor(@NotNull PsiElement element) {
+        return element instanceof SchemaStructureNameDeclaration
+                || element instanceof SchemaStructureRealName;
     }
 
     @Nullable
     @Override
-    public String getHelpId(@NotNull PsiElement psiElement) {
+    public String getHelpId(@NotNull PsiElement element) {
         return null;
     }
 
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof SchemaStructureNameDeclaration) {
-            return "Entity";
-        }
-        return "";
+        return "Schema";
     }
 
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (element instanceof SchemaStructureNameDeclaration declaration) {
-            String name = declaration.getName();
-            if (name != null) {
-                return name;
-            }
+        SchemaBasicStructureDeclaration declaration = PsiTreeUtil.getParentOfType(element, SchemaBasicStructureDeclaration.class);
+        if (declaration != null) {
+            return declaration.getText();
         }
         return "";
     }
@@ -56,11 +46,9 @@ public class SchemaFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        if (element instanceof SchemaStructureNameDeclaration) {
-            PsiElement declaration = PsiTreeUtil.findFirstParent(element, x -> x instanceof SchemaBasicStructureDeclaration);
-            if (declaration != null) {
-                return declaration.getText();
-            }
+        SchemaBasicStructureDeclaration declaration = PsiTreeUtil.getParentOfType(element, SchemaBasicStructureDeclaration.class);
+        if (declaration != null) {
+            return declaration.getText();
         }
         return "";
     }

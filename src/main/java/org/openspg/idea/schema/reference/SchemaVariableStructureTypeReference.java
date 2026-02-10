@@ -14,16 +14,17 @@ import org.openspg.idea.schema.SchemaFileType;
 import org.openspg.idea.schema.psi.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenceBase<SchemaVariableStructureType> {
 
+    private final String myNamespace;
     private final String myEntityName;
 
     public SchemaVariableStructureTypeReference(@NotNull SchemaVariableStructureType element) {
         super(element, new TextRange(0, element.getTextLength()));
+        myNamespace = findNamespace(element.getContainingFile());
         myEntityName = element.getStructureName().getFullName();
     }
 
@@ -46,16 +47,30 @@ public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenc
                 .toArray(LookupElement[]::new);
     }
 
+    private String findNamespace(PsiFile file) {
+        SchemaNamespace namespace = PsiTreeUtil.findChildOfType(file, SchemaNamespace.class);
+        if (namespace != null) {
+            return namespace.getNamespace();
+        }
+        return null;
+    }
+
     private Stream<SchemaStructureNameDeclaration> streamOfStructureNameDeclaration() {
-        return PsiTreeUtil.findChildrenOfType(myElement.getContainingFile(), SchemaRootEntity.class)
-                .stream()
+        return streamOfFiles()
+                .filter(x -> {
+                    if (x == myElement.getContainingFile()) {
+                        return true;
+                    }
+                    return myNamespace == null || myNamespace.equals(findNamespace(x));
+                })
+                .flatMap(x -> PsiTreeUtil.findChildrenOfType(x, SchemaRootEntity.class).stream())
                 .map(SchemaRootEntity::getEntity)
                 .map(SchemaEntity::getEntityHead)
                 .map(SchemaEntityHead::getBasicStructureDeclaration)
                 .map(SchemaBasicStructureDeclaration::getStructureNameDeclaration);
     }
 
-    private List<PsiFile> findFiles() {
+    private Stream<PsiFile> streamOfFiles() {
         Collection<VirtualFile> files = FileTypeIndex.getFiles(
                 SchemaFileType.INSTANCE,
                 GlobalSearchScope.projectScope(myElement.getProject())
@@ -63,7 +78,6 @@ public class SchemaVariableStructureTypeReference extends PsiPolyVariantReferenc
         PsiManager psiManager = PsiManager.getInstance(myElement.getProject());
         return files.stream()
                 .map(psiManager::findFile)
-                .filter(Objects::nonNull)
-                .toList();
+                .filter(Objects::nonNull);
     }
 }
