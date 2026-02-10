@@ -3,7 +3,7 @@ package org.openspg.idea.conceptRule.psi.impl;
 import com.intellij.psi.PsiReference;
 import org.apache.commons.lang3.StringUtils;
 import org.openspg.idea.conceptRule.psi.*;
-import org.openspg.idea.conceptRule.reference.ConceptRuleConceptTypeReference;
+import org.openspg.idea.conceptRule.reference.ConceptRuleSchemaNameReference;
 
 import java.util.List;
 
@@ -35,17 +35,17 @@ public class ConceptRulePsiImplUtil {
     }
 
     // ============================================
-    // ConceptRuleConceptType methods
-    public static String getMajorLabel(ConceptRuleConceptType element) {
-        List<ConceptRuleIdentifier> identifiers = element.getIdentifierList();
-        if (identifiers.isEmpty()) {
-            return StringUtils.EMPTY;
-        }
-        return identifiers.get(0).getLabel();
+    // ConceptRuleSchemaName methods
+    public static boolean isMajor(ConceptRuleSchemaName element) {
+        return element.getPrevSibling() == null;
     }
 
-    public static PsiReference getReference(ConceptRuleConceptType element) {
-        return new ConceptRuleConceptTypeReference(element);
+    public static String getLabel(ConceptRuleSchemaName element) {
+        return element.getIdentifier().getLabel();
+    }
+
+    public static PsiReference getReference(ConceptRuleSchemaName element) {
+        return new ConceptRuleSchemaNameReference(element);
     }
 
     // ============================================
@@ -60,7 +60,7 @@ public class ConceptRulePsiImplUtil {
     }
 
     // ============================================
-    // ConceptRuleIdentifier methods
+    // ConceptRuleConceptInstanceId methods
     //
     public static String getLabel(ConceptRuleConceptInstanceId element) {
         String label = element.getText();
