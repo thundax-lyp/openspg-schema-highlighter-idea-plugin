@@ -131,12 +131,13 @@ labelExpression ::= labelName (VBAR labelName)*
 // `TaxOfRiskApp`/`赌博应用`
 // `TaxOfRiskApp`/`赌博应用`+`TaxOfRiskApp`/`赌博应用`
 labelName ::= (conceptName (PLUS conceptName)*) | conceptType
-conceptType ::= identifier (DOT identifier)? {
-    methods=[getMajorLabel getReference]
-}
 conceptName ::= conceptType DIV conceptInstanceId
 conceptInstanceId ::= ESCAPED_SYMBOLIC_NAME {
     methods=[getLabel]
+}
+conceptType ::= schemaName (DOT schemaName)?
+schemaName ::= identifier {
+    methods=[isMajor getLabel getReference]
 }
 
 linkedEdge ::= functionExpr

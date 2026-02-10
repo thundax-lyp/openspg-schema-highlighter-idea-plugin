@@ -34,7 +34,7 @@ namespace ::= NAMESPACE_KEYWORD IDENTIFIER {
 // MultiChunk("多个文本块") -> Chunk, BigChunk
 // IND#belongTo(属于): TaxOfRiskApp
 basic_structure_declaration ::= structure_name_declaration LPARENTH structure_alias_declaration RPARENTH structure_type_declaration {
-    methods=[getName toJson]
+    methods=[getName getRealName toJson]
 }
 
 structure_name_declaration ::= structure_name {
@@ -109,7 +109,7 @@ plain_text_content ::= PLAIN_TEXT+ {
 root_entity ::= entity
 
 entity ::= entity_head entity_body? {
-    methods=[getName getAliasName getTypes getProperties getLevel isBodyEmpty toJson]
+    methods=[getName getRealName getAliasName getTypes getProperties getLevel isBodyEmpty toJson]
 }
 entity_head ::= basic_structure_declaration
 entity_body ::= INDENT property+ DEDENT
