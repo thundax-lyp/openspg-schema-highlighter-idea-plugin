@@ -8,17 +8,17 @@ import org.openspg.idea.common.annotator.AnnotateProcessor;
 import org.openspg.idea.conceptRule.annotator.processor.ConceptRuleConceptRuleProcessor;
 import org.openspg.idea.conceptRule.annotator.processor.ConceptRuleHighlightingProcessor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 final class ConceptRuleAnnotator implements Annotator {
 
-    private final Set<AnnotateProcessor> myProcessors;
+    private final List<AnnotateProcessor> myProcessors;
 
     public ConceptRuleAnnotator() {
-        myProcessors = new HashSet<>();
-        myProcessors.add(new ConceptRuleHighlightingProcessor());
-        myProcessors.add(new ConceptRuleConceptRuleProcessor());
+        myProcessors = List.of(
+                new ConceptRuleHighlightingProcessor(),
+                new ConceptRuleConceptRuleProcessor()
+        );
     }
 
     @Override

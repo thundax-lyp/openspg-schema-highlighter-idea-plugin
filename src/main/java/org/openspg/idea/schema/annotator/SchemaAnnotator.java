@@ -7,24 +7,24 @@ import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.annotator.AnnotateProcessor;
 import org.openspg.idea.schema.annotator.processor.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Aggregates schema-specific annotator processors and runs them in order.
  */
 final class SchemaAnnotator implements Annotator {
 
-    private final Set<AnnotateProcessor> myProcessors;
+    private final List<AnnotateProcessor> myProcessors;
 
     public SchemaAnnotator() {
-        myProcessors = new HashSet<>();
-        myProcessors.add(new SchemaHighlightingProcessor());
-        myProcessors.add(new SchemaEntitySemanticNameProcessor());
-        myProcessors.add(new SchemaEntityDepthProcessor());
-        myProcessors.add(new SchemaInheritedStructureTypeProcessor());
-        myProcessors.add(new SchemaNamespaceProcessor());
-        myProcessors.add(new SchemaRootEntityProcessor());
+        myProcessors = List.of(
+                new SchemaHighlightingProcessor(),
+                new SchemaEntitySemanticNameProcessor(),
+                new SchemaEntityDepthProcessor(),
+                new SchemaInheritedStructureTypeProcessor(),
+                new SchemaNamespaceProcessor(),
+                new SchemaRootEntityProcessor()
+        );
     }
 
     /**
