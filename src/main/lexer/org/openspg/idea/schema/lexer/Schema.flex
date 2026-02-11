@@ -62,10 +62,12 @@ import java.util.*;
 
     private int getIndent() {
         assert isAfterEol();
-        int indent = yylength();
+        int indent = 0;
         for (int i = 0; i < yylength(); i += 1) {
             if (getCharAtOffset(i) == '\t') {
-                indent = Math.floorDiv(indent + TAB_SIZE, TAB_SIZE) * TAB_SIZE;
+                indent = ((indent / TAB_SIZE) + 1) * TAB_SIZE;
+            } else {
+                indent += 1;
             }
         }
         return indent;

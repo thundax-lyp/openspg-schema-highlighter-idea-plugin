@@ -110,4 +110,36 @@ public class SchemaLexerTest extends AbstractLexerTestCase {
         ));
     }
 
+    /**
+     * Scenario: mixed indentation styles at same logical level
+     * Focus: tab+space should be aligned with five spaces
+     * Assert: no extra INDENT is emitted between sibling properties
+     */
+    public void testMixedIndentAtSameLevel() {
+        String text = """
+                Person(人物): EntityType
+                \t desc: "v1"
+                     index: text
+                """;
+
+        assertTokens(text, List.of(
+                new CommonToken(IDENTIFIER, "Person"),
+                new CommonToken(LPARENTH, "("),
+                new CommonToken(IDENTIFIER, "人物"),
+                new CommonToken(RPARENTH, ")"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(ENTITY_TYPE_KEYWORD, "EntityType"),
+
+                new CommonToken(INDENT, "\t "),
+                new CommonToken(DESC_KEYWORD, "desc"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(STRING_LITERAL, "\"v1\""),
+
+                new CommonToken(INDEX_KEYWORD, "index"),
+                new CommonToken(COLON, ":"),
+                new CommonToken(TEXT_KEYWORD, "text"),
+                new CommonToken(DEDENT, "")
+        ));
+    }
+
 }
