@@ -119,6 +119,9 @@
         <psi.referenceContributor
                 language="OpenSPG Schema"
                 implementation="org.openspg.idea.schema.reference.SchemaReferenceContributor"/>
+        <lang.documentationProvider
+                language="OpenSPG Schema"
+                implementationClass="org.openspg.idea.schema.reference.SchemaDocumentationProvider"/>
         <lang.findUsagesProvider
                 language="OpenSPG Schema"
                 implementationClass="org.openspg.idea.schema.reference.SchemaFindUsagesProvider"/>
@@ -175,9 +178,6 @@
                 language="OpenSPG Concept Rule"
                 implementation="org.openspg.idea.conceptRule.reference.ConceptRuleReferenceContributor"/>
 
-        <lang.findUsagesProvider
-                language="OpenSPG Concept Rule"
-                implementationClass="org.openspg.idea.conceptRule.reference.ConceptRuleFindUsagesProvider"/>
         <!-- ConceptRuleML: end -->
 
     </extensions>

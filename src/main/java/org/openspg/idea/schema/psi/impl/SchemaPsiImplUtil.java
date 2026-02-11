@@ -78,6 +78,7 @@ public class SchemaPsiImplUtil {
         }
 
         return types;
+
     }
 
     // ============================================

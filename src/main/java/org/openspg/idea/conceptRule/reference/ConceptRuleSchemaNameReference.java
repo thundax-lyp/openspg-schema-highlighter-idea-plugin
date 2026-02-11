@@ -44,12 +44,6 @@ public class ConceptRuleSchemaNameReference extends PsiPolyVariantReferenceBase<
                     }
                     return false;
                 })
-                .map(x -> {
-                    if (x.getStructureName().getStructureSemanticNameList().isEmpty()) {
-                        return x;
-                    }
-                    return x.getStructureName().getStructureRealName();
-                })
                 .map(PsiElementResolveResult::new)
                 .toArray(ResolveResult[]::new);
     }

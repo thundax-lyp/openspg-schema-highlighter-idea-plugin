@@ -17,8 +17,7 @@ public class SchemaFindUsagesProvider implements FindUsagesProvider {
 
     @Override
     public boolean canFindUsagesFor(@NotNull PsiElement element) {
-        return element instanceof SchemaStructureNameDeclaration
-                || element instanceof SchemaStructureRealName;
+        return element instanceof SchemaStructureNameDeclaration;
     }
 
     @Nullable
