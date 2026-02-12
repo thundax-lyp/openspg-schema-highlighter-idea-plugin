@@ -10,10 +10,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.openspg.idea.common.FoldingAdapter;
 import org.openspg.idea.conceptRule.psi.*;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Set;
 
 public class ConceptRuleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
@@ -46,10 +45,10 @@ public class ConceptRuleFoldingBuilder extends FoldingBuilderEx implements DumbA
         PsiElement element = node.getPsi();
         for (FoldingAdapter<? extends PsiElement> adapter : adapters) {
             if (adapter.getType().isInstance(element)) {
-                return adapter.getPlaceholderText(node, element);
+                return adapter.getPlaceholderText(element);
             }
         }
-        throw new IllegalArgumentException("Unknown PsiElement type: " + element.getClass());
+        return element.getText();
     }
 
     @Override
@@ -57,62 +56,44 @@ public class ConceptRuleFoldingBuilder extends FoldingBuilderEx implements DumbA
         return node.getPsi() instanceof PsiComment;
     }
 
-    public abstract static class FoldingAdapter<T extends PsiElement> {
-
-        @SuppressWarnings("unchecked")
-        public Class<T> getType() {
-            Type superClass = getClass().getGenericSuperclass();
-            Type[] params = ((ParameterizedType) superClass).getActualTypeArguments();
-            return (Class<T>) params[0];
-        }
-
-        @SuppressWarnings("unchecked")
-        public String getPlaceholderText(@NotNull ASTNode node, @NotNull PsiElement element) {
-            assert getType().isInstance(element);
-            return getPlaceholderText((T) element);
-        }
-
-        protected abstract String getPlaceholderText(T element);
-    }
-
     public static class ConceptRuleCommentFoldingAdapter extends FoldingAdapter<PsiComment> {
         @Override
-        protected String getPlaceholderText(@NotNull PsiComment element) {
+        protected String apply(@NotNull PsiComment element) {
             return "#...";
         }
     }
 
     public static class ConceptRuleRuleWrapperDeclarationFoldingAdapter extends FoldingAdapter<ConceptRuleRuleWrapperDeclaration> {
         @Override
-        protected String getPlaceholderText(@NotNull ConceptRuleRuleWrapperDeclaration element) {
+        protected String apply(@NotNull ConceptRuleRuleWrapperDeclaration element) {
             return element.getRuleWrapperHead().getText() + " ...";
         }
     }
 
     public static class ConceptRuleConceptRuleDeclarationFoldingAdapter extends FoldingAdapter<ConceptRuleConceptRuleDeclaration> {
         @Override
-        protected String getPlaceholderText(@NotNull ConceptRuleConceptRuleDeclaration element) {
+        protected String apply(@NotNull ConceptRuleConceptRuleDeclaration element) {
             return element.getConceptRuleHead().getText() + " {...}";
         }
     }
 
     public static class ConceptRuleTheGraphStructureDeclarationFoldingAdapter extends FoldingAdapter<ConceptRuleTheGraphStructureDeclaration> {
         @Override
-        protected String getPlaceholderText(@NotNull ConceptRuleTheGraphStructureDeclaration element) {
+        protected String apply(@NotNull ConceptRuleTheGraphStructureDeclaration element) {
             return element.getTheGraphStructureHead().getText() + " {...}";
         }
     }
 
     public static class ConceptRuleTheRuleDeclarationFoldingAdapter extends FoldingAdapter<ConceptRuleTheRuleDeclaration> {
         @Override
-        protected String getPlaceholderText(@NotNull ConceptRuleTheRuleDeclaration element) {
+        protected String apply(@NotNull ConceptRuleTheRuleDeclaration element) {
             return element.getTheRuleHead().getText() + " {...}";
         }
     }
 
     public static class ConceptRuleTheActionDeclarationFoldingAdapter extends FoldingAdapter<ConceptRuleTheActionDeclaration> {
         @Override
-        protected String getPlaceholderText(@NotNull ConceptRuleTheActionDeclaration element) {
+        protected String apply(@NotNull ConceptRuleTheActionDeclaration element) {
             return element.getTheActionHead().getText() + " {...}";
         }
     }

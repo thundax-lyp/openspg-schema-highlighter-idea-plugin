@@ -4,12 +4,10 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.common.annotator.AnnotateProcessor;
+import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
 import org.openspg.idea.schema.psi.SchemaVariableStructureType;
 import org.openspg.idea.schema.reference.SchemaVariableStructureTypeReference;
-
-import java.util.*;
 
 /**
  * Validates inherited types have been defined.

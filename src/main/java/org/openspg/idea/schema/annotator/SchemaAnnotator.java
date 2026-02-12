@@ -4,7 +4,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.common.annotator.AnnotateProcessor;
+import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.annotator.processor.*;
 
 import java.util.List;

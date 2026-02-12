@@ -5,7 +5,7 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.openspg.idea.common.annotator.AnnotateProcessor;
+import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
 import org.openspg.idea.schema.psi.SchemaEntity;
 import org.openspg.idea.schema.psi.SchemaFile;
