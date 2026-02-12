@@ -2,7 +2,7 @@ package org.openspg.idea.schema.psi;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.openspg.idea.schema.SchemaFileType;
 
 public class SchemaElementFactory {
@@ -12,18 +12,14 @@ public class SchemaElementFactory {
         return (SchemaFile) PsiFileFactory.getInstance(project).createFileFromText(
                 fileName,
                 SchemaFileType.INSTANCE,
-                text);
+                text
+        );
     }
 
-    public static IElementType createEntityName(Project project, String name) {
-        //String sourceCode = "namespace DUMMY\n"
-        //        + "\n"
-        //        + name + "(文本块):EntityType\n"
-        //        + "\n";
-        //final SchemaFile file = createFile(project, sourceCode);
-        //file.findChildByClass(SchemaEntityInfo.class);
-        //return (SchemaEntityInfo) file.getFirstChild();
-        throw new IllegalArgumentException("Not implemented yet");
+    public static SchemaStructureNameDeclaration createStructureNameDeclaration(Project project, String name) {
+        String sourceCode = "namespace Dummy\n" + name + "(\"a\"): EntityType\n";
+        SchemaFile file = createFile(project, sourceCode);
+        return PsiTreeUtil.findChildOfType(file, SchemaStructureNameDeclaration.class);
     }
 
 }

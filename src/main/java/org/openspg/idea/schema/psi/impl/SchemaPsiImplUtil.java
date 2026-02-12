@@ -89,7 +89,14 @@ public class SchemaPsiImplUtil {
     }
 
     public static PsiElement setName(SchemaStructureNameDeclaration element, String newName) {
-        throw new IllegalArgumentException("unsupported operation. setName(SchemaStructureNameDeclaration element, String newName)");
+        SchemaStructureNameDeclaration replacement = SchemaElementFactory.createStructureNameDeclaration(
+                element.getProject(),
+                newName
+        );
+        if (replacement == null) {
+            return element;
+        }
+        return element.replace(replacement);
     }
 
     public static PsiElement getNameIdentifier(SchemaStructureNameDeclaration element) {
