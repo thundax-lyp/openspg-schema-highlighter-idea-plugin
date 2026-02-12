@@ -7,6 +7,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
+import org.openspg.idea.schema.action.SchemaAddNamespaceQuickFix;
+import org.openspg.idea.schema.action.SchemaRemoveDuplicateNamespaceQuickFix;
 import org.openspg.idea.schema.psi.*;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class SchemaNamespaceProcessor implements AnnotateProcessor {
                     holder.newAnnotation(HighlightSeverity.ERROR, element.getText())
                             .range(element.getFirstChild())
                             .tooltip(SchemaBundle.message("SchemaAnnotator.error.first.element.of.document.must.be.a.namespace"))
+                            .withFix(new SchemaAddNamespaceQuickFix())
                             .create();
                 }
             }
@@ -41,6 +44,7 @@ public class SchemaNamespaceProcessor implements AnnotateProcessor {
                 holder.newAnnotation(HighlightSeverity.ERROR, element.getText())
                         .range(rootOrNamespaces.get(0))
                         .tooltip(SchemaBundle.message("SchemaAnnotator.error.namespace.not.defined"))
+                        .withFix(new SchemaAddNamespaceQuickFix())
                         .create();
             }
 
@@ -48,6 +52,7 @@ public class SchemaNamespaceProcessor implements AnnotateProcessor {
                 holder.newAnnotation(HighlightSeverity.ERROR, element.getText())
                         .range(namespaces.get(idx))
                         .tooltip(SchemaBundle.message("SchemaAnnotator.error.duplicate.definition.of.namespace"))
+                        .withFix(new SchemaRemoveDuplicateNamespaceQuickFix(namespaces.get(idx).getTextRange()))
                         .create();
             }
         }

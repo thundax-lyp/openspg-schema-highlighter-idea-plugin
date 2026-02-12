@@ -7,6 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
+import org.openspg.idea.schema.action.SchemaRenameEntityQuickFix;
 import org.openspg.idea.schema.psi.SchemaEntity;
 import org.openspg.idea.schema.psi.SchemaFile;
 import org.openspg.idea.schema.psi.SchemaRootEntity;
@@ -39,6 +40,13 @@ public class SchemaRootEntityProcessor implements AnnotateProcessor {
                             .tooltip(SchemaBundle.message(
                                     "SchemaAnnotator.error.cannot.redeclare.block.scoped.schema",
                                     currentName))
+                            .withFix(new SchemaRenameEntityQuickFix(
+                                    entity.getEntityHead()
+                                            .getBasicStructureDeclaration()
+                                            .getStructureNameDeclaration()
+                                            .getTextRange(),
+                                    currentName + "2"
+                            ))
                             .create();
                 }
             });

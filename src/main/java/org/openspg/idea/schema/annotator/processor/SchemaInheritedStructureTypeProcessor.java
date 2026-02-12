@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
+import org.openspg.idea.schema.action.SchemaCreateTypeQuickFix;
 import org.openspg.idea.schema.psi.SchemaVariableStructureType;
 import org.openspg.idea.schema.reference.SchemaVariableStructureTypeReference;
 
@@ -26,6 +27,7 @@ public class SchemaInheritedStructureTypeProcessor implements AnnotateProcessor 
                         .tooltip(SchemaBundle.message(
                                 "SchemaAnnotator.error.undefined.type",
                                 structureType.getStructureName().getStructureRealName().getText()))
+                        .withFix(new SchemaCreateTypeQuickFix(structureType.getText()))
                         .create();
             }
         }

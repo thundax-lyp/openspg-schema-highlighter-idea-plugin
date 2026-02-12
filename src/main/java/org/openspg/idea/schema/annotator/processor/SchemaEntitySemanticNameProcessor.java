@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.common.AnnotateProcessor;
 import org.openspg.idea.schema.SchemaBundle;
+import org.openspg.idea.schema.action.SchemaReplaceSemanticNameQuickFix;
 import org.openspg.idea.schema.psi.SchemaStructureSemanticName;
 
 import java.util.Arrays;
@@ -34,6 +35,10 @@ public class SchemaEntitySemanticNameProcessor implements AnnotateProcessor {
                         .tooltip(SchemaBundle.message(
                                 "SchemaAnnotator.error.semantic.name.must.be.one.of",
                                 StringUtils.join(SEMANTIC_NAMES, ", ")))
+                        .withFix(new SchemaReplaceSemanticNameQuickFix(
+                                element.getTextRange(),
+                                "USE"
+                        ))
                         .create();
                 return false;
             }
