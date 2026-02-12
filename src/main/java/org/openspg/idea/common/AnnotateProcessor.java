@@ -1,4 +1,4 @@
-package org.openspg.idea.common.annotator;
+package org.openspg.idea.common;
 
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
