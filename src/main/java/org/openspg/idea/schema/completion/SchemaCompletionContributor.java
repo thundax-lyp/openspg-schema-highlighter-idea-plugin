@@ -8,12 +8,42 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 import org.openspg.idea.schema.psi.SchemaEntity;
 import org.openspg.idea.schema.psi.SchemaEntityHead;
+import org.openspg.idea.schema.psi.SchemaPropertyNameVariable;
+import org.openspg.idea.schema.psi.SchemaPropertyValueVariable;
 import org.openspg.idea.schema.psi.SchemaVariableStructureType;
 
 final class SchemaCompletionContributor extends CompletionContributor {
 
+    private static final String[] BUILTIN_PROPERTY_NAMES = {
+            "desc",
+            "properties",
+            "relations",
+            "hypernymPredicate",
+            "regular",
+            "spreadable",
+            "autoRelate",
+            "constraint",
+            "rule",
+            "index"
+    };
+
+    private static final String[] BUILTIN_PROPERTY_VALUES = {
+            "isA",
+            "locateAt",
+            "mannerOf",
+            "text",
+            "vector",
+            "sparseVector",
+            "textAndVector",
+            "textAndSparseVector",
+            "notNull",
+            "multiValue"
+    };
+
     SchemaCompletionContributor() {
         this.extendCompletionForEntityType();
+        this.extendCompletionForPropertyNames();
+        this.extendCompletionForPropertyValues();
     }
 
     private void extendCompletionForEntityType() {
@@ -41,6 +71,32 @@ final class SchemaCompletionContributor extends CompletionContributor {
                     }
                 }
         );
+    }
+
+    private void extendCompletionForPropertyNames() {
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(SchemaPropertyNameVariable.class), new CompletionProvider<>() {
+            @Override
+            public void addCompletions(@NotNull CompletionParameters parameters,
+                                       @NotNull ProcessingContext context,
+                                       @NotNull CompletionResultSet resultSet) {
+                for (String keyword : BUILTIN_PROPERTY_NAMES) {
+                    resultSet.addElement(LookupElementBuilder.create(keyword));
+                }
+            }
+        });
+    }
+
+    private void extendCompletionForPropertyValues() {
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(SchemaPropertyValueVariable.class), new CompletionProvider<>() {
+            @Override
+            public void addCompletions(@NotNull CompletionParameters parameters,
+                                       @NotNull ProcessingContext context,
+                                       @NotNull CompletionResultSet resultSet) {
+                for (String keyword : BUILTIN_PROPERTY_VALUES) {
+                    resultSet.addElement(LookupElementBuilder.create(keyword));
+                }
+            }
+        });
     }
 
 }
