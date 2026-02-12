@@ -16,7 +16,7 @@ public abstract class FoldingAdapter<T extends PsiElement> {
     }
 
     @SuppressWarnings("unchecked")
-    public String getPlaceholderText(@NotNull PsiElement element) {
+    public @NotNull String getPlaceholderText(@NotNull PsiElement element) {
         return apply((T) element);
     }
 
