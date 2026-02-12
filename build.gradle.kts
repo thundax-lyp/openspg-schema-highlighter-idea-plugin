@@ -123,11 +123,11 @@ intellijPlatform {
 
 tasks {
     withType<GenerateParserTask>().configureEach {
-        classpath += grammarKitRuntime
+        classpath = files(classpath, grammarKitRuntime)
     }
 
     withType<GenerateLexerTask>().configureEach {
-        classpath += grammarKitRuntime
+        classpath = files(classpath, grammarKitRuntime)
     }
 
     // Set the JVM compatibility versions
