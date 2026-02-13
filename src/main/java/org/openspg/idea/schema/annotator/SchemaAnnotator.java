@@ -19,6 +19,7 @@ final class SchemaAnnotator implements Annotator {
     public SchemaAnnotator() {
         myProcessors = List.of(
                 new SchemaHighlightingProcessor(),
+                new SchemaSyntaxErrorProcessor(),
                 new SchemaEntitySemanticNameProcessor(),
                 new SchemaEntityDepthProcessor(),
                 new SchemaInheritedStructureTypeProcessor(),
